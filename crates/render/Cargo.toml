@@ -1,0 +1,9 @@
+[package]
+name = "render"
+edition.workspace = true
+version.workspace = true
+license.workspace = true
+
+[dependencies]
+image.workspace = true
+thiserror.workspace = true

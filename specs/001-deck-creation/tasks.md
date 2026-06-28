@@ -34,10 +34,10 @@ Cargo workspace + Tauri shell + React/Vite frontend (see plan.md → Project Str
 
 **Purpose**: Initialize the workspace, shell, frontend, and the test toolchain.
 
-- [ ] T001 Create Cargo workspace with member crate skeletons (domain, providers, render, storage, deckforge) in `Cargo.toml` and `crates/*/Cargo.toml` + `crates/*/src/lib.rs`
+- [X] T001 Create Cargo workspace with member crate skeletons (domain, providers, render, storage, deckforge) in `Cargo.toml` and `crates/*/Cargo.toml` + `crates/*/src/lib.rs`
 - [ ] T002 [P] Initialize Tauri 2 desktop shell in `src-tauri/` (`src-tauri/Cargo.toml`, `src-tauri/tauri.conf.json`, `src-tauri/src/main.rs`) depending on the workspace crates
 - [ ] T003 [P] Initialize React 18 + Vite 5 + TypeScript (strict) app in `frontend/` (`frontend/package.json`, `frontend/tsconfig.json`, `frontend/vite.config.ts`, `frontend/src/App.tsx`)
-- [ ] T004 [P] Configure Rust formatting/linting in `rustfmt.toml` and a clippy lint script in `scripts/lint.sh`
+- [X] T004 [P] Configure Rust formatting/linting in `rustfmt.toml` and a clippy lint script in `scripts/lint.sh`
 - [ ] T005 [P] Configure ESLint + Prettier + TS strict in `frontend/.eslintrc.cjs` and `frontend/.prettierrc`
 - [ ] T006 [P] Set up Vitest in `frontend/vitest.config.ts` with a sample passing test in `frontend/tests/smoke.test.ts`
 - [ ] T007 [P] Set up Storybook 8 in `frontend/.storybook/main.ts` and `frontend/.storybook/preview.ts`
@@ -55,22 +55,22 @@ primitives, IPC plumbing, frontend client port) that every story depends on.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T010 [P] Unit tests for `Suit` and the 16 `CourtCardId`s (write first, must fail) in `crates/domain/tests/court.rs`
-- [ ] T011 Implement `Suit` + `CourtCardId` + active suit set in `crates/domain/src/suit.rs` and `crates/domain/src/court.rs`
-- [ ] T012 [P] Unit test: seeded ChaCha20 RNG determinism + court-card selection (write first) in `crates/domain/tests/rng.rs`
-- [ ] T013 Implement seeded RNG helper + `select_court_card(seed)` in `crates/domain/src/rng.rs`
-- [ ] T014 [P] Unit tests: model (de)serialization + invariants + redacted Debug for personal fields (write first) in `crates/domain/tests/model.rs`
-- [ ] T015 Implement domain types (Session, StyleOption, CardStyleGuide, SampleCard, Deck, GenerationProvenance) with redacting `Debug` on personal fields in `crates/domain/src/{session.rs,style.rs,deck.rs,provenance.rs}`
-- [ ] T016 [P] Provider contract tests against FakeProvider (determinism by (prompt,seed), error mapping, stable `id()`) (write first) in `crates/providers/tests/fake.rs`
-- [ ] T017 Implement `ProviderError`/`ProviderId` + `TextProvider`/`ImageProvider` traits in `crates/providers/src/error.rs` and `crates/providers/src/traits.rs`
-- [ ] T018 Implement `FakeProvider` (deterministic placeholder text/image from `(prompt,seed)`) in `crates/providers/src/fake.rs`
-- [ ] T019 [P] Store round-trip tests (filesystem impl, temp dir) (write first) in `crates/storage/tests/fs.rs`
-- [ ] T020 Implement `Store` trait + filesystem implementation in `crates/storage/src/store.rs` and `crates/storage/src/fs.rs`
-- [ ] T021 [P] Bundle read/write + single-active-pointer tests per `contracts/deck-bundle.md` (write first) in `crates/storage/tests/bundle.rs`
-- [ ] T022 Implement bundle (de)serialization + `active.json` handling in `crates/storage/src/bundle.rs`
-- [ ] T023 [P] Unit test: deterministic layer compositing (write first) in `crates/render/tests/compositor.rs`
-- [ ] T024 Implement compositing primitives (Pixmap layering, decode/encode, normalized-slot placement) in `crates/render/src/compositor.rs` and `crates/render/src/layout.rs`
-- [ ] T025 Implement `deckforge` orchestration skeleton + error type + dependency injection of providers/store/RNG in `crates/deckforge/src/lib.rs` and `crates/deckforge/src/error.rs`
+- [X] T010 [P] Unit tests for `Suit` and the 16 `CourtCardId`s (write first, must fail) in `crates/domain/tests/court.rs`
+- [X] T011 Implement `Suit` + `CourtCardId` + active suit set in `crates/domain/src/suit.rs` and `crates/domain/src/court.rs`
+- [X] T012 [P] Unit test: seeded ChaCha20 RNG determinism + court-card selection (write first) in `crates/domain/tests/rng.rs`
+- [X] T013 Implement seeded RNG helper + `select_court_card(seed)` in `crates/domain/src/rng.rs`
+- [X] T014 [P] Unit tests: model (de)serialization + invariants + redacted Debug for personal fields (write first) in `crates/domain/tests/model.rs`
+- [X] T015 Implement domain types (Session, StyleOption, CardStyleGuide, SampleCard, Deck, GenerationProvenance) with redacting `Debug` on personal fields in `crates/domain/src/{session.rs,style.rs,deck.rs,provenance.rs}`
+- [X] T016 [P] Provider contract tests against FakeProvider (determinism by (prompt,seed), error mapping, stable `id()`) (write first) in `crates/providers/tests/fake.rs`
+- [X] T017 Implement `ProviderError`/`ProviderId` + `TextProvider`/`ImageProvider` traits in `crates/providers/src/error.rs` and `crates/providers/src/traits.rs`
+- [X] T018 Implement `FakeProvider` (deterministic placeholder text/image from `(prompt,seed)`) in `crates/providers/src/fake.rs`
+- [X] T019 [P] Store round-trip tests (filesystem impl, temp dir) (write first) in `crates/storage/tests/fs.rs`
+- [X] T020 Implement `Store` trait + filesystem implementation in `crates/storage/src/store.rs` and `crates/storage/src/fs.rs`
+- [X] T021 [P] Bundle read/write + single-active-pointer tests per `contracts/deck-bundle.md` (write first) in `crates/storage/tests/bundle.rs`
+- [X] T022 Implement bundle (de)serialization + `active.json` handling in `crates/storage/src/bundle.rs`
+- [X] T023 [P] Unit test: deterministic layer compositing (write first) in `crates/render/tests/compositor.rs`
+- [X] T024 Implement compositing primitives (Pixmap layering, decode/encode, normalized-slot placement) in `crates/render/src/compositor.rs` and `crates/render/src/layout.rs`
+- [X] T025 Implement `deckforge` orchestration skeleton + error type + dependency injection of providers/store/RNG in `crates/deckforge/src/lib.rs` and `crates/deckforge/src/error.rs`
 - [ ] T026 Implement Tauri command plumbing: registry, provider+store construction from config/env, app-data path resolution in `src-tauri/src/main.rs`, `src-tauri/src/commands.rs`, `src-tauri/src/config.rs`
 - [ ] T027 [P] Contract test for `get_asset` (resolves a stored key; `unknown_key` error) (write first) in `src-tauri/tests/get_asset.rs`
 - [ ] T028 Implement `get_asset` command in `src-tauri/src/commands.rs`
@@ -98,17 +98,17 @@ inputs.
 > **Write these tests FIRST, ensure they FAIL before implementation**
 
 - [ ] T034 [P] [US1] Rust contract test: `generate_icon_styles` returns ≥3 options, all suits present, deterministic by seed; `select_icon_style` records choice — in `src-tauri/tests/us1_icons.rs`
-- [ ] T035 [P] [US1] Rust unit test: `deckforge` generate-icons use-case (per-suit prompt build, fake provider, ≥3 options) in `crates/deckforge/tests/icons.rs`
+- [X] T035 [P] [US1] Rust unit test: `deckforge` generate-icons use-case (per-suit prompt build, fake provider, ≥3 options) in `crates/deckforge/tests/icons.rs`
 - [ ] T036 [P] [US1] Storybook stories: `StyleOption` and `StyleChoice` grid (loading / options / regenerating states) in `frontend/src/components/StyleOption.stories.tsx`
 - [ ] T037 [P] [US1] Playwright: inputs → generate → ≥3 options → regenerate (inputs preserved) → select → proceed (mock backend) in `frontend/tests/us1-style-choice.spec.ts`
-- [ ] T069 [P] [US1] Rust unit test: `compose_image_prompt` makes iconography rules authoritative over deck-style text (write first) in `crates/deckforge/tests/prompt.rs` (FR-019)
+- [X] T069 [P] [US1] Rust unit test: `compose_image_prompt` makes iconography rules authoritative over deck-style text (write first) in `crates/deckforge/tests/prompt.rs` (FR-019)
 - [ ] T071 [P] [US1] Failure-path tests: a provider error surfaces a retryable error and preserves entered inputs/selection — Rust contract in `src-tauri/tests/failure_retry.rs` and Playwright in `frontend/tests/failure-retry.spec.ts` (FR-017, SC-006; pattern reused by US2/US3)
 
 ### Implementation for User Story 1
 
-- [ ] T070 [US1] Implement `compose_image_prompt(rules, style)` via `TextProvider` (rules authoritative; output reused by icon, style-guide, and sample image generation) in `crates/deckforge/src/prompt.rs` (FR-019)
-- [ ] T038 [US1] Implement `generate_icon_styles` use-case (per-suit prompts via `compose_image_prompt` (T070), provider calls, store icons, ≥3 seeded options) in `crates/deckforge/src/icons.rs`
-- [ ] T039 [US1] Implement `select_icon_style` use-case (record chosen option on session) in `crates/deckforge/src/icons.rs`
+- [X] T070 [US1] Implement `compose_image_prompt(rules, style)` via `TextProvider` (rules authoritative; output reused by icon, style-guide, and sample image generation) in `crates/deckforge/src/prompt.rs` (FR-019)
+- [X] T038 [US1] Implement `generate_icon_styles` use-case (per-suit prompts via `compose_image_prompt` (T070), provider calls, store icons, ≥3 seeded options) in `crates/deckforge/src/icons.rs`
+- [X] T039 [US1] Implement `select_icon_style` use-case (record chosen option on session) in `crates/deckforge/src/icons.rs`
 - [ ] T040 [US1] Wire `generate_icon_styles` + `select_icon_style` Tauri commands (with progress events + retryable errors) in `src-tauri/src/commands.rs`
 - [ ] T041 [P] [US1] `InputsView` (iconography rules + deck-style text, optional) in `frontend/src/views/InputsView.tsx`
 - [ ] T042 [P] [US1] `StyleChoiceView` (option grid, select, regenerate, progress, retry) in `frontend/src/views/StyleChoiceView.tsx`
