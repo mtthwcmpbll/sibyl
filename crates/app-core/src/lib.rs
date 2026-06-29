@@ -110,16 +110,15 @@ pub fn get_active_deck(forge: &Sibyl) -> CmdResult<Option<Deck>> {
 
 // --- Construction from configuration/environment -------------------------------------------
 
-/// App-data base directory where deck bundles live (Principle III). Configurable via env.
+/// Sibyl's home directory, where deck bundles live (Principle III). Set by `SIBYL_HOME`;
+/// defaults to `~/.sibyl`.
 pub fn app_data_dir() -> PathBuf {
-    if let Ok(dir) = std::env::var("SIBYL_DATA_DIR") {
+    if let Ok(dir) = std::env::var("SIBYL_HOME") {
         return PathBuf::from(dir);
     }
-    std::env::var("XDG_DATA_HOME")
-        .map(PathBuf::from)
-        .or_else(|_| std::env::var("HOME").map(|h| PathBuf::from(h).join(".local/share")))
-        .unwrap_or_else(|_| PathBuf::from("."))
-        .join("sibyl")
+    std::env::var("HOME")
+        .map(|h| PathBuf::from(h).join(".sibyl"))
+        .unwrap_or_else(|_| PathBuf::from(".sibyl"))
 }
 
 /// Build a `Sibyl` from configuration. Defaults to the offline `FakeProvider` + local

@@ -64,11 +64,11 @@ async fn errors_map_to_contract_codes() {
 }
 
 #[test]
-fn app_data_dir_honors_env_override() {
-    std::env::set_var("SIBYL_DATA_DIR", "/tmp/sibyl-test-dir");
+fn app_data_dir_honors_sibyl_home() {
+    std::env::set_var("SIBYL_HOME", "/tmp/sibyl-test-home");
     assert_eq!(
         app::app_data_dir(),
-        std::path::PathBuf::from("/tmp/sibyl-test-dir")
+        std::path::PathBuf::from("/tmp/sibyl-test-home")
     );
-    std::env::remove_var("SIBYL_DATA_DIR");
+    std::env::remove_var("SIBYL_HOME");
 }

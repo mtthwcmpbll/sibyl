@@ -68,6 +68,13 @@ cargo install tauri-cli --version '^2'
 cd src-tauri && cargo tauri dev
 ```
 
+Approved decks and draft state live under Sibyl's home directory — `SIBYL_HOME`, defaulting to
+`~/.sibyl`:
+
+```bash
+export SIBYL_HOME=~/.sibyl     # optional; this is the default
+```
+
 By default it uses the offline `FakeProvider`. Real generation is opt-in via environment.
 
 ### Claude provider (your Claude Code subscription)
