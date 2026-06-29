@@ -16,7 +16,6 @@ async fn session_with_choice(forge: &DeckForge) -> String {
         .generate_icon_styles(GenerateIconStyles {
             session_id: None,
             seed: Some(FIXED_SEED),
-            rules: "bold geometric glyphs".into(),
             style: "midnight indigo and gold".into(),
             count: 3,
         })
@@ -61,7 +60,6 @@ async fn style_guide_requires_a_selected_style() {
         .generate_icon_styles(GenerateIconStyles {
             session_id: None,
             seed: Some(FIXED_SEED),
-            rules: "r".into(),
             style: "s".into(),
             count: 3,
         })

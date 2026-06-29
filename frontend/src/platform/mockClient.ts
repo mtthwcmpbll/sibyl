@@ -37,7 +37,6 @@ function allCourtCards(): CourtCardId[] {
 
 interface MockSession {
   id: string;
-  rules: string;
   style: string;
   round: number;
   options: StyleOption[];
@@ -56,11 +55,11 @@ export class MockDeckForgeClient implements DeckForgeClient {
   private attempts = new Map<string, number>();
 
   async generateIconStyles(input: GenerateIconStylesInput): Promise<IconStylesResult> {
-    // Failure-injection hook for the failure-path test (FR-017): rules containing "boom"
-    // fail retryably on the first attempt, then succeed.
-    if (/boom/i.test(input.iconographyRules)) {
-      const n = (this.attempts.get(input.iconographyRules) ?? 0) + 1;
-      this.attempts.set(input.iconographyRules, n);
+    // Failure-injection hook for the failure-path test (FR-017): a deck style containing
+    // "boom" fails retryably on the first attempt, then succeeds.
+    if (/boom/i.test(input.deckStyleText)) {
+      const n = (this.attempts.get(input.deckStyleText) ?? 0) + 1;
+      this.attempts.set(input.deckStyleText, n);
       if (n === 1) err("provider_failed", "image backend is down", true);
     }
 
@@ -68,10 +67,9 @@ export class MockDeckForgeClient implements DeckForgeClient {
     if (session) {
       session.round += 1;
     } else {
-      const id = `sess-${fnv1a(input.iconographyRules + "|" + input.deckStyleText).toString(16)}`;
+      const id = `sess-${fnv1a(input.deckStyleText).toString(16)}`;
       session = {
         id,
-        rules: input.iconographyRules,
         style: input.deckStyleText,
         round: 0,
         options: [],
@@ -90,7 +88,7 @@ export class MockDeckForgeClient implements DeckForgeClient {
           suit,
           imageKey: `mock/${session!.id}/${optionId}/${suit}.png`,
         })),
-        promptUsed: `rules:${session.rules} | style:${session.style} | opt ${o}`,
+        promptUsed: `style:${session.style} | opt ${o}`,
       });
     }
     session.options = options;
@@ -173,7 +171,7 @@ export class MockDeckForgeClient implements DeckForgeClient {
 
   async rejectAndRestart(sessionId: string): Promise<RestartInputs> {
     const s = this.session(sessionId);
-    const inputs = { rules: s.rules, style: s.style };
+    const inputs = { style: s.style };
     this.sessions.delete(sessionId);
     return inputs;
   }

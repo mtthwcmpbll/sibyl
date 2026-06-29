@@ -12,7 +12,8 @@ All commands are async. Errors are returned as a structured `{ code, message, re
 
 Generate a round of suit-icon style options (FR-003/004/006).
 
-- **Input**: `{ sessionId?: string, iconographyRules: string, deckStyleText: string, count?: number /* default 3, min 3 */ }`
+- **Input**: `{ sessionId?: string, deckStyleText: string, count?: number /* default 3, min 3 */ }`
+  (iconography rules are an app resource, not an input — see FR-001)
 - **Output**: `{ sessionId: string, styleOptions: StyleOption[] }`  (`StyleOption[]` length ≥ 3)
 - **Progress**: emits progress events keyed by `sessionId` while generating.
 - **Errors**: `provider_failed` (retryable), `provider_unavailable` (retryable).
@@ -74,7 +75,7 @@ Approve the sample → persist the bundle and set it active (FR-012/018).
 Reject the sample and return to the input step with inputs preserved (FR-013).
 
 - **Input**: `{ sessionId: string }`
-- **Output**: `{ sessionId: string, iconographyRules: string, deckStyleText: string }`
+- **Output**: `{ style: string }`  (the deck-style description, to repopulate the input)
 - **Notes**: Leaves any existing active deck untouched (edge case); discards the draft's
   unapproved artifacts but returns the prior text inputs for editing.
 

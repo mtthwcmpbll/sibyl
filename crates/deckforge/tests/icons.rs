@@ -15,7 +15,6 @@ fn input() -> GenerateIconStyles {
     GenerateIconStyles {
         session_id: None,
         seed: Some(FIXED_SEED),
-        rules: "bold geometric glyphs".into(),
         style: "midnight indigo and gold".into(),
         count: 3,
     }

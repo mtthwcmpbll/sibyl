@@ -46,7 +46,6 @@ async fn provider_failure_surfaces_as_retryable() {
         .generate_icon_styles(GenerateIconStyles {
             session_id: None,
             seed: Some(7),
-            rules: "r".into(),
             style: "s".into(),
             count: 3,
         })

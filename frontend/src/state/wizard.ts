@@ -13,7 +13,6 @@ export type WizardStep = "inputs" | "choosing" | "guide" | "review" | "done";
 export interface WizardState {
   step: WizardStep;
   sessionId?: string;
-  rules: string;
   style: string;
   options: StyleOption[];
   chosenId?: string;
@@ -26,7 +25,6 @@ export interface WizardState {
 
 const initialState = (): WizardState => ({
   step: "inputs",
-  rules: "",
   style: "",
   options: [],
   busy: false,
@@ -40,7 +38,7 @@ function toClientError(e: unknown): ClientError {
 export interface Wizard {
   getState(): WizardState;
   subscribe(listener: () => void): () => void;
-  setInputs(rules: string, style: string): void;
+  setStyle(style: string): void;
   clearError(): void;
   generate(): Promise<void>;
   regenerate(): Promise<void>;
@@ -83,8 +81,8 @@ export function createWizard(client: DeckForgeClient): Wizard {
       listeners.add(listener);
       return () => listeners.delete(listener);
     },
-    setInputs(rules, style) {
-      set({ rules, style });
+    setStyle(style) {
+      set({ style });
     },
     clearError() {
       set({ error: undefined });
@@ -92,7 +90,6 @@ export function createWizard(client: DeckForgeClient): Wizard {
     async generate() {
       await run(async () => {
         const r = await client.generateIconStyles({
-          iconographyRules: state.rules,
           deckStyleText: state.style,
         });
         set({
@@ -107,7 +104,6 @@ export function createWizard(client: DeckForgeClient): Wizard {
       await run(async () => {
         const r = await client.generateIconStyles({
           sessionId: state.sessionId,
-          iconographyRules: state.rules,
           deckStyleText: state.style,
         });
         set({ options: r.styleOptions, chosenId: undefined });
@@ -142,7 +138,6 @@ export function createWizard(client: DeckForgeClient): Wizard {
         const inputs = await client.rejectAndRestart(state.sessionId!);
         set({
           step: "inputs",
-          rules: inputs.rules,
           style: inputs.style,
           sessionId: undefined,
           options: [],

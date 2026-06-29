@@ -2,7 +2,6 @@ import { expect, test } from "@playwright/test";
 
 async function driveToReveal(page: import("@playwright/test").Page) {
   await page.goto("/");
-  await page.getByTestId("rules-input").fill("geometric glyphs");
   await page.getByTestId("style-input").fill("indigo and gold");
   await page.getByTestId("generate").click();
   await page.locator('[data-testid^="style-option-"]').first().click();
@@ -35,7 +34,7 @@ test("US3: rejecting returns to inputs with inputs preserved and no active deck"
   await page.getByTestId("reject").click();
 
   await expect(page.getByTestId("generate")).toBeVisible();
-  await expect(page.getByTestId("rules-input")).toHaveValue("geometric glyphs");
+  await expect(page.getByTestId("style-input")).toHaveValue("indigo and gold");
   const stored = await page.evaluate(() => localStorage.getItem("deckforge.activeDeck"));
   expect(stored).toBeNull();
 });

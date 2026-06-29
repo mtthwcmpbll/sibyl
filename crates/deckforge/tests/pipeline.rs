@@ -19,7 +19,6 @@ async fn full_pipeline_produces_an_active_self_contained_bundle() {
         .generate_icon_styles(GenerateIconStyles {
             session_id: None,
             seed: Some(FIXED_SEED),
-            rules: "geometric glyphs, no faces".into(),
             style: "midnight indigo and gold".into(),
             count: 3,
         })

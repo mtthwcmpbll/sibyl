@@ -19,15 +19,9 @@ async fn full_command_flow_produces_active_deck_and_decodable_assets() {
     let dir = tempfile::tempdir().unwrap();
     let f = forge(dir.path());
 
-    let out = app::generate_icon_styles(
-        &f,
-        None,
-        "geometric glyphs".into(),
-        "indigo and gold".into(),
-        Some(3),
-    )
-    .await
-    .unwrap();
+    let out = app::generate_icon_styles(&f, None, "indigo and gold".into(), Some(3))
+        .await
+        .unwrap();
     assert!(out.style_options.len() >= 3);
 
     // get_asset returns valid, decodable base64 for a real icon key.
@@ -58,7 +52,7 @@ async fn errors_map_to_contract_codes() {
     assert_eq!(e.code, "unknown_session");
     assert!(!e.retryable);
 
-    let out = app::generate_icon_styles(&f, None, "r".into(), "s".into(), None)
+    let out = app::generate_icon_styles(&f, None, "s".into(), None)
         .await
         .unwrap();
     let e = app::select_icon_style(&f, &out.session_id, "bad").unwrap_err();

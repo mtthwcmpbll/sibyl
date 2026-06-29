@@ -11,8 +11,7 @@ it("walks the full deck-creation journey through the UI (US1→US3)", async () =
   render(<App />);
 
   // US1 — inputs → generate → choose
-  await user.type(await screen.findByTestId("rules-input"), "geometric glyphs");
-  await user.type(screen.getByTestId("style-input"), "indigo and gold");
+  await user.type(await screen.findByTestId("style-input"), "indigo and gold");
   await user.click(screen.getByTestId("generate"));
 
   const grid = await screen.findByTestId("options-grid");

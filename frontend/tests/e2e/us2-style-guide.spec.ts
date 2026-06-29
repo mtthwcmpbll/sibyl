@@ -2,7 +2,6 @@ import { expect, test } from "@playwright/test";
 
 test("US2: a chosen style yields a style guide with the required elements", async ({ page }) => {
   await page.goto("/");
-  await page.getByTestId("rules-input").fill("geometric glyphs");
   await page.getByTestId("style-input").fill("indigo and gold");
   await page.getByTestId("generate").click();
 

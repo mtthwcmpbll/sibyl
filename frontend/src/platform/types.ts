@@ -81,7 +81,6 @@ export interface IconStylesResult {
 }
 
 export interface RestartInputs {
-  rules: string;
   style: string;
 }
 

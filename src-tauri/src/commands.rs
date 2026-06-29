@@ -11,18 +11,10 @@ use domain::{CardStyleGuide, Deck, SampleCard};
 pub async fn generate_icon_styles(
     state: tauri::State<'_, DeckForge>,
     session_id: Option<String>,
-    iconography_rules: String,
     deck_style_text: String,
     count: Option<usize>,
 ) -> CmdResult<IconStylesResult> {
-    app_core::generate_icon_styles(
-        &state,
-        session_id,
-        iconography_rules,
-        deck_style_text,
-        count,
-    )
-    .await
+    app_core::generate_icon_styles(&state, session_id, deck_style_text, count).await
 }
 
 #[tauri::command]

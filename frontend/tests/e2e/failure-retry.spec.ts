@@ -5,13 +5,12 @@ import { expect, test } from "@playwright/test";
 test("a provider failure is retryable and preserves inputs", async ({ page }) => {
   await page.goto("/");
   // "boom" triggers a one-time retryable failure in the mock backend.
-  await page.getByTestId("rules-input").fill("boom geometric glyphs");
-  await page.getByTestId("style-input").fill("indigo and gold");
+  await page.getByTestId("style-input").fill("boom indigo and gold");
   await page.getByTestId("generate").click();
 
   await expect(page.getByTestId("error-banner")).toBeVisible();
   // Inputs are preserved.
-  await expect(page.getByTestId("rules-input")).toHaveValue("boom geometric glyphs");
+  await expect(page.getByTestId("style-input")).toHaveValue("boom indigo and gold");
 
   // Retry succeeds.
   await page.getByTestId("retry").click();

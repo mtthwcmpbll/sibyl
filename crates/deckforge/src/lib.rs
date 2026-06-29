@@ -19,6 +19,11 @@ pub use error::{DeckForgeError, Result};
 pub use icons::{GenerateIconStyles, IconStylesResult};
 pub use prompt::compose_image_prompt;
 
+/// Authoritative suit-iconography rules — defined by the application (not the owner) and
+/// baked in as a resource. The owner supplies only their deck style; these rules enforce
+/// consistent tarot-deck construction and take precedence over style (FR-001/FR-019).
+pub const ICONOGRAPHY_RULES: &str = include_str!("../resources/iconography_rules.md");
+
 /// Orchestrates deck creation against injected providers and storage. Construct it in the
 /// host (e.g. the Tauri shell) from configuration; the core depends only on the traits.
 pub struct DeckForge {

@@ -5,8 +5,8 @@ use serde::{Deserialize, Serialize};
 use crate::court::CourtCardId;
 use crate::suit::Suit;
 
-/// A personal, sensitive string (iconography rules, deck-style text). Its `Debug`
-/// representation is redacted so personal data never leaks into logs (Principle VI).
+/// A personal, sensitive string (the owner's deck-style text). Its `Debug` representation is
+/// redacted so personal data never leaks into logs (Principle VI).
 #[derive(Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Personal(pub String);
 
@@ -88,7 +88,8 @@ pub enum SessionStatus {
 pub struct DeckCreationSession {
     pub id: String,
     pub seed: u64,
-    pub iconography_rules: Personal,
+    /// Authoritative suit-iconography rules — an app-defined resource, not owner input.
+    pub iconography_rules: String,
     pub deck_style_text: Personal,
     pub style_options: Vec<StyleOption>,
     pub chosen_style_option_id: Option<String>,
@@ -103,7 +104,13 @@ pub struct DeckCreationSession {
 }
 
 impl DeckCreationSession {
-    pub fn new(id: impl Into<String>, seed: u64, rules: Personal, style: Personal) -> Self {
+    pub fn new(
+        id: impl Into<String>,
+        seed: u64,
+        rules: impl Into<String>,
+        style: Personal,
+    ) -> Self {
+        let rules = rules.into();
         let provenance = GenerationProvenance {
             seed,
             iconography_rules: rules.clone(),
@@ -137,7 +144,8 @@ impl DeckCreationSession {
 #[serde(rename_all = "camelCase")]
 pub struct GenerationProvenance {
     pub seed: u64,
-    pub iconography_rules: Personal,
+    /// Authoritative suit-iconography rules used (app resource, not personal).
+    pub iconography_rules: String,
     pub deck_style_text: Personal,
     pub chosen_style_option_id: Option<String>,
     pub court_card_shown: Option<CourtCardId>,

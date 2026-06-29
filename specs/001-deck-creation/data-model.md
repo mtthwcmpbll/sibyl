@@ -13,7 +13,7 @@ regenerate; never "active".
 |-------|------|--------------------|
 | `id` | string (uuid) | Draft session id. |
 | `seed` | u64 | ChaCha20 seed for this session (reproducibility, Principle V). |
-| `iconographyRules` | string | FR-001; optional (defaults apply when blank). Personal — redacted in logs. |
+| `iconographyRules` | string | App-defined rules resource (FR-001); not owner input, not personal. |
 | `deckStyleText` | string | FR-002; optional. Personal — redacted in logs. |
 | `styleOptions` | StyleOption[] | Current round's options (FR-003); ≥3. |
 | `chosenStyleOptionId` | string? | Set when the owner selects (FR-005). |
@@ -102,7 +102,7 @@ Recorded for the deck and for each generated artifact (FR-014; Principle V/VI).
 | Field | Type | Notes |
 |-------|------|-------|
 | `seed` | u64 | Session seed. |
-| `iconographyRules` | string | What was provided (personal; protected, not logged). |
+| `iconographyRules` | string | The app rules resource used (not personal). |
 | `deckStyleText` | string | What was provided (personal; protected, not logged). |
 | `chosenStyleOptionId` | string | Selected option. |
 | `courtCardShown` | CourtCardId | Sample card the deck was approved against. |
@@ -127,5 +127,5 @@ Recorded for the deck and for each generated artifact (FR-014; Principle V/VI).
   Major Arcana (clarification 2026-06-28).
 - A `Deck` becomes `active` only via approval; rejected/abandoned sessions never set `active`
   (FR-018).
-- Personal fields (`iconographyRules`, `deckStyleText`) MUST use redacting debug/log
-  representations (Principle VI).
+- The personal field (`deckStyleText`) MUST use a redacting debug/log representation
+  (Principle VI). The iconography rules are an app resource and are not personal.

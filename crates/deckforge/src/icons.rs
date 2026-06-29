@@ -7,13 +7,14 @@ use crate::prompt::compose_image_prompt;
 use crate::DeckForge;
 
 /// Input for generating (or regenerating) a round of suit-icon style options (FR-003/006).
+/// The iconography rules are NOT here — they are an app resource ([`crate::ICONOGRAPHY_RULES`]);
+/// the owner supplies only their deck style.
 #[derive(Debug, Clone, Default)]
 pub struct GenerateIconStyles {
     /// Existing session to regenerate within; `None` starts a new session.
     pub session_id: Option<String>,
-    /// Explicit seed for a new session (reproducibility/tests). Derived from inputs if absent.
+    /// Explicit seed for a new session (reproducibility/tests). Derived from style if absent.
     pub seed: Option<u64>,
-    pub rules: String,
     pub style: String,
     /// Desired option count; clamped to a minimum of 3 (SC-002).
     pub count: usize,
@@ -40,14 +41,12 @@ impl DeckForge {
                 s
             }
             None => {
-                let seed = input
-                    .seed
-                    .unwrap_or_else(|| sub_seed(0, &format!("{}|{}", input.rules, input.style)));
+                let seed = input.seed.unwrap_or_else(|| sub_seed(0, &input.style));
                 let id = format!("sess-{seed:016x}");
                 DeckCreationSession::new(
                     id,
                     seed,
-                    Personal::from(input.rules.as_str()),
+                    crate::ICONOGRAPHY_RULES,
                     Personal::from(input.style.as_str()),
                 )
             }

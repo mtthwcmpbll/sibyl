@@ -14,6 +14,10 @@
 
 - Q: Which card should the approval sample card depict? → A: Always a **court/face card** (Page, Knight, Queen, or King) — these present the richest imagery for judging the future deck. The remaining documented assumptions (standard four suits, three style options, single active deck, optional inputs) are confirmed as-is.
 
+### Session 2026-06-29
+
+- Q: Should the owner provide the iconography rules? → A: **No.** The iconography rules are a **developer-defined app resource** that enforces consistent tarot-deck construction; they are not shown or editable in the app. The owner provides only their **deck-style description**. The rules remain authoritative over the style (FR-019).
+
 ## Guiding Experience
 
 Per the project constitution's first gate, this feature must amplify the three Guiding
@@ -22,9 +26,9 @@ Experiences:
 - **Surprise**: the face-down → flip reveal and the multiple, varied style options each round
   keep seeing a card non-obvious and alive; generation favors genuine variation over templated
   repetition (determinism is reserved for testing/replay, not the default feel).
-- **Unexpected Connections**: the owner's free-text deck-style description and iconography
-  rules seed a personal visual language that later draw features weave into spreads; this
-  feature establishes the vocabulary those future connections draw on.
+- **Unexpected Connections**: the owner's free-text deck-style description seeds a personal
+  visual language that later draw features weave into spreads; this feature establishes the
+  vocabulary those future connections draw on.
 - **Inspired by the Visual Identity**: the entire feature exists to establish a coherent,
   evocative visual identity (suit icons + card style guide) so every future card invites
   interpretation rather than merely illustrating — which is why the approval card is a rich
@@ -40,25 +44,25 @@ wizard, but each stage is independently testable using fixed inputs.
 
 ### User Story 1 - Generate and choose a suit-icon style (Priority: P1)
 
-The owner opens deck creation, provides two text inputs — a set of explicit **iconography
-rules** (governing how suit icons should be generated) and a free-text **deck-style
-description** — and asks the app to generate suit icons. The app produces several distinct
-**style options**, each rendering the full set of suits as one cohesive look. The owner
-reviews the options and selects the one that speaks to them.
+The owner opens deck creation and provides a single free-text input — their **deck-style
+description** — and asks the app to generate suit icons. The app applies its built-in
+iconography rules (not shown to the owner) and produces several distinct **style options**,
+each rendering the full set of suits as one cohesive look. The owner reviews the options and
+selects the one that speaks to them.
 
 **Why this priority**: The chosen suit iconography is the seed of the entire deck identity;
 nothing downstream can happen without it. On its own it already delivers value — the owner
 ends up with a set of suit icons they love.
 
-**Independent Test**: Provide a fixed iconography-rules input and a fixed deck-style
-description, run generation, and confirm the owner is shown multiple cohesive style options
-and can select exactly one. Fully testable without any later stage.
+**Independent Test**: Provide a fixed deck-style description, run generation, and confirm the
+owner is shown multiple cohesive style options and can select exactly one. Fully testable
+without any later stage.
 
 **Acceptance Scenarios**:
 
-1. **Given** the owner is on the input step, **When** they enter iconography rules and a
-   deck-style description and start generation, **Then** the app presents at least three
-   distinct style options, each showing every suit in a consistent style.
+1. **Given** the owner is on the input step, **When** they enter a deck-style description and
+   start generation, **Then** the app presents at least three distinct style options, each
+   showing every suit in a consistent style.
 2. **Given** style options are displayed, **When** the owner selects one option, **Then**
    that option is recorded as the chosen suit iconography and the owner can proceed.
 3. **Given** none of the options appeal, **When** the owner chooses to regenerate, **Then**
@@ -137,8 +141,8 @@ active deck while rejecting leaves no active deck and returns to the start.
 
 - **Generation failure or timeout** at any stage: the owner is informed and can retry; no
   previously entered inputs or chosen selections are lost.
-- **Empty inputs**: if the iconography rules or deck-style description are left blank, the app
-  proceeds using sensible defaults rather than blocking.
+- **Empty input**: if the deck-style description is left blank, the app proceeds using a
+  sensible default rather than blocking (the iconography rules always apply regardless).
 - **No appealing options**: the owner can regenerate style options repeatedly, editing inputs
   between rounds.
 - **Non-standard suits**: if the iconography rules specify a different set of suits than the
@@ -152,9 +156,10 @@ active deck while rejecting leaves no active deck and returns to the start.
 
 ### Functional Requirements
 
-- **FR-001**: System MUST let the owner provide an **iconography rules** input — explicit,
-  authoritative rules that govern how suit icons are generated and that constrain every
-  icon-generation request.
+- **FR-001**: System MUST apply **app-defined iconography rules** — a developer-authored
+  resource bundled with the application — that govern how suit icons are generated and
+  constrain every icon-generation request. These rules are NOT owner input and are not shown
+  or editable in the app.
 - **FR-002**: System MUST let the owner provide a free-text **deck-style description** used to
   guide icon generation.
 - **FR-003**: System MUST generate suit icons covering every suit of the deck and present them
@@ -192,18 +197,18 @@ active deck while rejecting leaves no active deck and returns to the start.
   allowing retry — without discarding already-entered inputs or selections.
 - **FR-018**: System MUST treat only an **approved** result as the active deck; unapproved or
   rejected attempts MUST NOT become the active deck.
-- **FR-019**: When composing image-generation prompts, System MUST treat the iconography rules
-  as authoritative constraints that take precedence over the deck-style description; the
-  deck-style description supplies aesthetic direction *within* those rules. The composed prompt
-  actually used MUST be recorded in provenance (see FR-014).
+- **FR-019**: When composing image-generation prompts, System MUST treat the app-defined
+  iconography rules (FR-001) as authoritative constraints that take precedence over the
+  deck-style description; the deck-style description supplies aesthetic direction *within*
+  those rules. The composed prompt actually used MUST be recorded in provenance (see FR-014).
 
 ### Key Entities
 
 - **Personal Deck (Deck Identity)**: The durable outcome of this feature. References the
   chosen suit-icon set, the card style guide, and the generation provenance; has an active
   status once approved. Reusable by future features.
-- **Iconography Rules Input**: Owner-authored explicit rules constraining how suit icons are
-  generated.
+- **Iconography Rules (app resource)**: Developer-authored rules bundled with the app that
+  constrain how suit icons are generated. Authoritative over the deck style; not owner input.
 - **Deck-Style Description**: Owner-authored free-text describing the desired deck style.
 - **Style Option (Suit-Icon Set)**: One candidate set rendering all suits in a single cohesive
   style; the owner selects exactly one.
@@ -239,12 +244,12 @@ active deck while rejecting leaves no active deck and returns to the start.
 
 ## Assumptions
 
-- The deck uses the **standard four tarot suits** (Cups, Wands, Swords, Pentacles) unless the
-  iconography rules input specifies a different set.
+- The deck uses the **standard four tarot suits** (Cups, Wands, Swords, Pentacles) as fixed by
+  the app-defined iconography rules.
 - The default number of style options per generation round is **three** (more is acceptable).
 - The app maintains **one active personal deck at a time** (consistent with single-owner use).
-- Both text inputs (iconography rules, deck-style description) are **optional**; sensible
-  defaults apply when blank.
+- The **iconography rules** are a fixed app resource (not owner input). The owner's **deck-style
+  description** is the only input and is **optional**; a sensible default applies when blank.
 - The **sample card** shown for approval is always a single court/face card (Page, Knight,
   Queen, or King), chosen for its rich figure imagery. Generating finished imagery for the
   full set of cards is **out of scope** here and happens just-in-time in future features.

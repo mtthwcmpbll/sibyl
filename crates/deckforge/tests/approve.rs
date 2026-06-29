@@ -16,7 +16,6 @@ async fn drive_to_sample(forge: &DeckForge, seed: u64) -> String {
         .generate_icon_styles(GenerateIconStyles {
             session_id: None,
             seed: Some(seed),
-            rules: "bold geometric glyphs".into(),
             style: "midnight indigo and gold".into(),
             count: 3,
         })
@@ -68,7 +67,7 @@ async fn reject_leaves_no_active_deck_and_returns_inputs() {
     let sid = drive_to_sample(&forge, FIXED_SEED).await;
 
     let inputs = forge.reject_and_restart(&sid).unwrap();
-    assert_eq!(inputs.rules, "bold geometric glyphs");
+    assert_eq!(inputs.style, "midnight indigo and gold");
     assert!(
         forge.get_active_deck().unwrap().is_none(),
         "no active deck after reject"

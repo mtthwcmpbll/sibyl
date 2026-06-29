@@ -3,7 +3,6 @@ import { expect, test } from "@playwright/test";
 test("US1: generate, regenerate, and choose a suit-icon style", async ({ page }) => {
   await page.goto("/");
 
-  await page.getByTestId("rules-input").fill("geometric glyphs, no faces");
   await page.getByTestId("style-input").fill("midnight indigo and gold");
   await page.getByTestId("generate").click();
 

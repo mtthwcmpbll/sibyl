@@ -3,10 +3,10 @@ use domain::{CardStyleGuide, Deck, FlourishRef, SuitIcon};
 use crate::error::{DeckForgeError, Result};
 use crate::DeckForge;
 
-/// Inputs returned to the wizard after a rejection so they can be edited and retried (FR-013).
+/// Input returned to the wizard after a rejection so it can be edited and retried (FR-013).
+/// Only the deck style is owner-provided; the iconography rules are a fixed app resource.
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct RestartInputs {
-    pub rules: String,
     pub style: String,
 }
 
@@ -98,7 +98,6 @@ impl DeckForge {
     pub fn reject_and_restart(&self, session_id: &str) -> Result<RestartInputs> {
         let session = self.load_session(session_id)?;
         let inputs = RestartInputs {
-            rules: session.iconography_rules.as_str().to_string(),
             style: session.deck_style_text.as_str().to_string(),
         };
         self.store

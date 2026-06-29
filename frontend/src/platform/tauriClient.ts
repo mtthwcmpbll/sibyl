@@ -18,7 +18,6 @@ export class TauriDeckForgeClient implements DeckForgeClient {
   generateIconStyles(input: GenerateIconStylesInput): Promise<IconStylesResult> {
     return invoke("generate_icon_styles", {
       sessionId: input.sessionId ?? null,
-      iconographyRules: input.iconographyRules,
       deckStyleText: input.deckStyleText,
       count: input.count ?? null,
     });

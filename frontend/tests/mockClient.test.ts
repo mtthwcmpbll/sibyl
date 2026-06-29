@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 
 import { MockDeckForgeClient } from "../src/platform/mockClient";
 import { courtCardSlug, type CourtRank } from "../src/platform";
-import { ALL_SUITS, FIXED_RULES, FIXED_STYLE } from "./fixtures";
+import { ALL_SUITS, FIXED_STYLE } from "./fixtures";
 
 const RANKS: CourtRank[] = ["page", "knight", "queen", "king"];
 
@@ -10,7 +10,6 @@ beforeEach(() => localStorage.clear());
 
 async function driveToSample(c: MockDeckForgeClient) {
   const r = await c.generateIconStyles({
-    iconographyRules: FIXED_RULES,
     deckStyleText: FIXED_STYLE,
   });
   await c.selectIconStyle(r.sessionId, r.styleOptions[0].id);
@@ -23,7 +22,6 @@ describe("MockDeckForgeClient contract", () => {
   it("returns at least three options, each covering every suit", async () => {
     const c = new MockDeckForgeClient();
     const r = await c.generateIconStyles({
-      iconographyRules: FIXED_RULES,
       deckStyleText: FIXED_STYLE,
     });
     expect(r.styleOptions.length).toBeGreaterThanOrEqual(3);
@@ -34,11 +32,9 @@ describe("MockDeckForgeClient contract", () => {
 
   it("is deterministic in session id for the same inputs", async () => {
     const a = await new MockDeckForgeClient().generateIconStyles({
-      iconographyRules: FIXED_RULES,
       deckStyleText: FIXED_STYLE,
     });
     const b = await new MockDeckForgeClient().generateIconStyles({
-      iconographyRules: FIXED_RULES,
       deckStyleText: FIXED_STYLE,
     });
     expect(b.sessionId).toBe(a.sessionId);
@@ -67,7 +63,6 @@ describe("MockDeckForgeClient contract", () => {
       code: "unknown_session",
     });
     const r = await c.generateIconStyles({
-      iconographyRules: FIXED_RULES,
       deckStyleText: FIXED_STYLE,
     });
     await expect(c.generateStyleGuide(r.sessionId)).rejects.toMatchObject({

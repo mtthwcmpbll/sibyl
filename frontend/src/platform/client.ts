@@ -9,7 +9,7 @@ import type {
 
 export interface GenerateIconStylesInput {
   sessionId?: string;
-  iconographyRules: string;
+  /** The owner's deck style. Iconography rules are an app resource, not an input. */
   deckStyleText: string;
   count?: number;
 }

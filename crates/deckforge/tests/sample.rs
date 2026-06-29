@@ -17,7 +17,6 @@ async fn drive_to_sample(forge: &DeckForge, seed: u64) -> (String, domain::Sampl
         .generate_icon_styles(GenerateIconStyles {
             session_id: None,
             seed: Some(seed),
-            rules: "bold geometric glyphs".into(),
             style: "midnight indigo and gold".into(),
             count: 3,
         })

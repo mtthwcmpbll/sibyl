@@ -7,28 +7,18 @@ export function InputsView({ wizard, state }: { wizard: Wizard; state: WizardSta
     <section className="view inputs-view">
       <h2>Begin your deck</h2>
       <p className="muted">
-        Describe the rules your suit iconography must follow, and the style you want to feel.
-        Both are optional — leave them blank for tasteful defaults.
+        Describe the style you want your deck to feel like. The app handles the rules of good
+        tarot iconography — you bring the vision. Leave it blank for a tasteful default.
       </p>
-
-      <label htmlFor="rules">Iconography rules (authoritative)</label>
-      <textarea
-        id="rules"
-        data-testid="rules-input"
-        rows={4}
-        value={state.rules}
-        placeholder="e.g. line art only, sacred geometry, no human faces…"
-        onChange={(e) => wizard.setInputs(e.target.value, state.style)}
-      />
 
       <label htmlFor="style">Deck style</label>
       <textarea
         id="style"
         data-testid="style-input"
-        rows={4}
+        rows={5}
         value={state.style}
-        placeholder="e.g. midnight indigo and gold, woodcut warmth…"
-        onChange={(e) => wizard.setInputs(state.rules, e.target.value)}
+        placeholder="e.g. midnight indigo and gold, woodcut warmth, art-nouveau linework…"
+        onChange={(e) => wizard.setStyle(e.target.value)}
       />
 
       <ErrorBanner error={state.error} onRetry={() => wizard.generate()} onDismiss={() => wizard.clearError()} />

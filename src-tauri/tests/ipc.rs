@@ -61,7 +61,6 @@ fn full_journey_over_real_ipc() {
         "generate_icon_styles",
         serde_json::json!({
             "sessionId": null,
-            "iconographyRules": "geometric glyphs",
             "deckStyleText": "indigo and gold",
             "count": 3
         }),

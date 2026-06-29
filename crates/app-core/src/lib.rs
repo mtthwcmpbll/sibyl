@@ -56,7 +56,6 @@ pub struct AssetResponse {
 pub async fn generate_icon_styles(
     forge: &DeckForge,
     session_id: Option<String>,
-    iconography_rules: String,
     deck_style_text: String,
     count: Option<usize>,
 ) -> CmdResult<IconStylesResult> {
@@ -64,7 +63,6 @@ pub async fn generate_icon_styles(
         .generate_icon_styles(GenerateIconStyles {
             session_id,
             seed: None,
-            rules: iconography_rules,
             style: deck_style_text,
             count: count.unwrap_or(3),
         })
