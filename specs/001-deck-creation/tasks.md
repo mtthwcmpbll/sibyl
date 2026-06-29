@@ -132,14 +132,14 @@ none chosen.
 > **Write these tests FIRST, ensure they FAIL before implementation**
 
 - [ ] T044 [P] [US2] Rust contract test: `generate_style_guide` derives prompt from chosen style, returns border/chrome + back + front layout + ≥1 shader area + flourishes; `no_style_selected` error — in `src-tauri/tests/us2_style_guide.rs`
-- [ ] T045 [P] [US2] Rust unit test: `deckforge` style-guide use-case (prompt auto-derived, fake provider, versioned guide) in `crates/deckforge/tests/style_guide.rs`
+- [X] T045 [P] [US2] Rust unit test: `deckforge` style-guide use-case (prompt auto-derived, fake provider, versioned guide) in `crates/deckforge/tests/style_guide.rs`
 - [ ] T046 [P] [US2] Storybook stories: `StyleGuidePreview` (loading / complete) in `frontend/src/components/StyleGuidePreview.stories.tsx`
 - [ ] T047 [P] [US2] Playwright: selected style → generate guide → preview shows required elements (mock backend) in `frontend/tests/us2-style-guide.spec.ts`
 
 ### Implementation for User Story 2
 
-- [ ] T048 [US2] Implement style-guide prompt derivation from the chosen option in `crates/deckforge/src/style_guide.rs`
-- [ ] T049 [US2] Implement `generate_style_guide` use-case: generate/store assets, assemble front layout + shader areas + flourishes, version the guide — in `crates/deckforge/src/style_guide.rs` and `crates/render/src/layout.rs`
+- [X] T048 [US2] Implement style-guide prompt derivation from the chosen option in `crates/deckforge/src/style_guide.rs`
+- [X] T049 [US2] Implement `generate_style_guide` use-case: generate/store assets, assemble front layout + shader areas + flourishes, version the guide — in `crates/deckforge/src/style_guide.rs` and `crates/render/src/layout.rs`
 - [ ] T050 [US2] Wire `generate_style_guide` Tauri command (progress + retryable errors) in `src-tauri/src/commands.rs`
 - [ ] T051 [US2] `StyleGuideView` (preview + proceed) wired to client in `frontend/src/views/StyleGuideView.tsx`
 
@@ -161,16 +161,16 @@ single active deck; reject leaves no active deck and preserves inputs.
 > **Write these tests FIRST, ensure they FAIL before implementation**
 
 - [ ] T052 [P] [US3] Rust contract tests: `compose_sample_card` (always a court card, seeded, returns front/back keys), `approve_deck` (sets exactly one active), `reject_and_restart` (preserves inputs, no active), `get_active_deck` — in `src-tauri/tests/us3_commands.rs`
-- [ ] T053 [P] [US3] Rust unit test: compose use-case builds court-card front (icon + front + imagery + chrome) and back; byte-stable offline (reproducibility) in `crates/deckforge/tests/sample.rs`
-- [ ] T054 [P] [US3] Rust unit test: approve promotes draft → bundle + flips active pointer; reject leaves existing active unchanged in `crates/deckforge/tests/approve.rs`
+- [X] T053 [P] [US3] Rust unit test: compose use-case builds court-card front (icon + front + imagery + chrome) and back; byte-stable offline (reproducibility) in `crates/deckforge/tests/sample.rs`
+- [X] T054 [P] [US3] Rust unit test: approve promotes draft → bundle + flips active pointer; reject leaves existing active unchanged in `crates/deckforge/tests/approve.rs`
 - [ ] T055 [P] [US3] Storybook stories: `CardFlip` (face-down → revealed) in `frontend/src/components/CardFlip.stories.tsx`
 - [ ] T056 [P] [US3] Playwright: compose → face-down → flip → approve → active deck persists on reload; reject → back to inputs with no active deck (mock backend) in `frontend/tests/us3-reveal-approve.spec.ts`
 
 ### Implementation for User Story 3
 
-- [ ] T057 [US3] Implement `compose_sample_card` use-case: seeded court-card pick, JIT imagery via provider, canonical compositing of front + back, store sample — in `crates/deckforge/src/sample.rs` and `crates/render/src/card.rs`
-- [ ] T058 [US3] Implement `approve_deck` (promote draft → bundle, set active), `reject_and_restart` (discard draft artifacts, keep inputs), `get_active_deck` — in `crates/deckforge/src/approve.rs`
-- [ ] T072 [US3] Assemble `GenerationProvenance` (rules, style, seed, chosen option, court card, provider/model id, composed prompts sent) into the draft and persist it in the approved bundle; unit test asserts it is sufficient to regenerate and that composed prompts are recorded — in `crates/deckforge/src/approve.rs` and `crates/deckforge/tests/provenance.rs` (FR-014/FR-019; Principles V/VI)
+- [X] T057 [US3] Implement `compose_sample_card` use-case: seeded court-card pick, JIT imagery via provider, canonical compositing of front + back, store sample — in `crates/deckforge/src/sample.rs` and `crates/render/src/card.rs`
+- [X] T058 [US3] Implement `approve_deck` (promote draft → bundle, set active), `reject_and_restart` (discard draft artifacts, keep inputs), `get_active_deck` — in `crates/deckforge/src/approve.rs`
+- [X] T072 [US3] Assemble `GenerationProvenance` (rules, style, seed, chosen option, court card, provider/model id, composed prompts sent) into the draft and persist it in the approved bundle; unit test asserts it is sufficient to regenerate and that composed prompts are recorded — in `crates/deckforge/src/approve.rs` and `crates/deckforge/tests/provenance.rs` (FR-014/FR-019; Principles V/VI)
 - [ ] T059 [US3] Wire `compose_sample_card` / `approve_deck` / `reject_and_restart` / `get_active_deck` Tauri commands in `src-tauri/src/commands.rs`
 - [ ] T060 [P] [US3] `CardFlip` component (face-down → flip reveal animation, ~60fps) in `frontend/src/components/CardFlip.tsx`
 - [ ] T061 [US3] `RevealView` (face-down card, flip, approve/reject) wired to client in `frontend/src/views/RevealView.tsx`

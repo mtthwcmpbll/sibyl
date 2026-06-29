@@ -3,6 +3,9 @@ use std::io::Cursor;
 use image::{DynamicImage, GenericImageView, Rgba, RgbaImage};
 use thiserror::Error;
 
+/// An RGBA color as a plain byte array, so callers need not depend on the `image` crate.
+pub type Color = [u8; 4];
+
 #[derive(Debug, Error)]
 pub enum RenderError {
     #[error("decode error: {0}")]
@@ -23,8 +26,8 @@ pub struct Layer<'a> {
 /// Canonical, deterministic CPU compositing (constitution Principles IV/V). Produces the
 /// card image bytes that the presentation layer later animates. Pure-CPU, so output is
 /// byte-stable across platforms.
-pub fn compose(width: u32, height: u32, background: Rgba<u8>, layers: &[Layer]) -> Result<Vec<u8>> {
-    let mut canvas = RgbaImage::from_pixel(width, height, background);
+pub fn compose(width: u32, height: u32, background: Color, layers: &[Layer]) -> Result<Vec<u8>> {
+    let mut canvas = RgbaImage::from_pixel(width, height, Rgba(background));
 
     for layer in layers {
         let top =

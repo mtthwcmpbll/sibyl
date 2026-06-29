@@ -89,14 +89,24 @@ pub struct DeckCreationSession {
     pub deck_style_text: Personal,
     pub style_options: Vec<StyleOption>,
     pub chosen_style_option_id: Option<String>,
+    pub style_guide: Option<CardStyleGuide>,
+    pub sample_card: Option<SampleCard>,
     pub status: SessionStatus,
     /// How many style-option rounds have been generated (FR-006). Drives reproducible
     /// re-rolls: each round derives a fresh sub-seed from the session seed.
     pub round: u32,
+    /// Provenance accumulated across the session, finalized into the deck on approval (FR-014).
+    pub provenance: GenerationProvenance,
 }
 
 impl DeckCreationSession {
     pub fn new(id: impl Into<String>, seed: u64, rules: Personal, style: Personal) -> Self {
+        let provenance = GenerationProvenance {
+            seed,
+            iconography_rules: rules.clone(),
+            deck_style_text: style.clone(),
+            ..Default::default()
+        };
         Self {
             id: id.into(),
             seed,
@@ -104,8 +114,11 @@ impl DeckCreationSession {
             deck_style_text: style,
             style_options: Vec::new(),
             chosen_style_option_id: None,
+            style_guide: None,
+            sample_card: None,
             status: SessionStatus::Inputs,
             round: 0,
+            provenance,
         }
     }
 
@@ -130,11 +143,87 @@ pub struct GenerationProvenance {
     pub prompts: BTreeMap<String, String>,
 }
 
+/// Normalized rectangle (0–1 coordinates) within a card canvas.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq)]
+pub struct Rect {
+    pub x: f32,
+    pub y: f32,
+    pub w: f32,
+    pub h: f32,
+}
+
+impl Rect {
+    pub fn new(x: f32, y: f32, w: f32, h: f32) -> Self {
+        Rect { x, y, w, h }
+    }
+}
+
+/// Front-face layout: where the suit icon, card imagery, and title sit (normalized).
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct FrontLayout {
+    pub aspect: f32,
+    pub suit_icon: Rect,
+    pub card_imagery: Rect,
+    pub title: Rect,
+}
+
+/// A region designated for animated shader ("UV coating") effects — this feature only
+/// *designates* it; the presentation layer applies the effect later.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ShaderArea {
+    pub id: String,
+    pub rect: Rect,
+    pub kind: String,
+}
+
+/// A decorative flourish placement.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct FlourishRef {
+    pub asset_key: String,
+    pub rect: Rect,
+    pub rotation: f32,
+}
+
+/// The card-system definition derived from the chosen style (FR-007/008). Versioned so prior
+/// cards stay attributable to the identity that produced them (Principle IV).
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CardStyleGuide {
+    pub id: String,
+    pub version: u32,
+    pub derived_from_style_option_id: String,
+    pub prompt_used: String,
+    pub border_chrome_key: String,
+    pub card_back_key: String,
+    pub card_front_layout: FrontLayout,
+    pub shader_areas: Vec<ShaderArea>,
+    pub flourishes: Vec<FlourishRef>,
+}
+
+/// Approval outcome for the sample card (FR-011).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub enum Approval {
+    Pending,
+    Approved,
+    Rejected,
+}
+
+/// The single composed court/face card preview (FR-009/010; always a court card).
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SampleCard {
+    pub court_card: CourtCardId,
+    pub card_imagery_key: String,
+    pub front_key: String,
+    pub back_key: String,
+    pub approval: Approval,
+}
+
 /// The durable, approved deck identity — the prepared-state bundle future features consume.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Deck {
     pub id: String,
     pub active: bool,
     pub suit_icons: Vec<SuitIcon>,
+    pub style_guide: CardStyleGuide,
     pub provenance: GenerationProvenance,
 }

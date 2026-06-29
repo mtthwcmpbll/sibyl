@@ -17,7 +17,7 @@ fn compositing_is_deterministic() {
     let a = compose(
         16,
         16,
-        Rgba([0, 0, 0, 255]),
+        [0, 0, 0, 255],
         &[Layer {
             png: &layer,
             x: 2,
@@ -28,7 +28,7 @@ fn compositing_is_deterministic() {
     let b = compose(
         16,
         16,
-        Rgba([0, 0, 0, 255]),
+        [0, 0, 0, 255],
         &[Layer {
             png: &layer,
             x: 2,
@@ -46,7 +46,7 @@ fn opaque_layer_covers_background() {
     let bytes = compose(
         16,
         16,
-        Rgba([200, 200, 200, 255]),
+        [200, 200, 200, 255],
         &[Layer {
             png: &layer,
             x: 0,

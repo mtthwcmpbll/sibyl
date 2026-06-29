@@ -3,14 +3,18 @@
 //! Wires the provider seam, storage seam, and render together into the use-cases the wizard
 //! drives. Holds no durable state itself; drafts and approved bundles live in the [`Store`].
 
+pub mod approve;
 pub mod error;
 pub mod icons;
 pub mod prompt;
+pub mod sample;
+pub mod style_guide;
 
 use domain::DeckCreationSession;
 use providers::{ImageProvider, TextProvider};
 use storage::Store;
 
+pub use approve::RestartInputs;
 pub use error::{DeckForgeError, Result};
 pub use icons::{GenerateIconStyles, IconStylesResult};
 pub use prompt::compose_image_prompt;

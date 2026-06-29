@@ -16,6 +16,12 @@ pub enum DeckForgeError {
     UnknownOption(String),
     #[error("no style selected")]
     NoStyleSelected,
+    #[error("no style guide generated")]
+    NoStyleGuide,
+    #[error("nothing to approve")]
+    NothingToApprove,
+    #[error("invalid state: {0}")]
+    InvalidState(String),
 }
 
 impl DeckForgeError {

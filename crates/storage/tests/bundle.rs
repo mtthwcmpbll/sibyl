@@ -1,5 +1,24 @@
-use domain::{Deck, GenerationProvenance, Suit, SuitIcon};
+use domain::{CardStyleGuide, Deck, FrontLayout, GenerationProvenance, Rect, Suit, SuitIcon};
 use storage::{read_active, read_active_deck, write_deck_and_activate, FsStore};
+
+fn style_guide(id: &str) -> CardStyleGuide {
+    CardStyleGuide {
+        id: format!("sg-{id}"),
+        version: 1,
+        derived_from_style_option_id: "r0-opt0".into(),
+        prompt_used: "p".into(),
+        border_chrome_key: format!("decks/{id}/style-guide/border-chrome.png"),
+        card_back_key: format!("decks/{id}/style-guide/card-back.png"),
+        card_front_layout: FrontLayout {
+            aspect: 0.66,
+            suit_icon: Rect::new(0.0, 0.0, 0.2, 0.2),
+            card_imagery: Rect::new(0.1, 0.15, 0.8, 0.6),
+            title: Rect::new(0.0, 0.85, 1.0, 0.1),
+        },
+        shader_areas: vec![],
+        flourishes: vec![],
+    }
+}
 
 fn sample_deck(id: &str) -> Deck {
     Deck {
@@ -9,6 +28,7 @@ fn sample_deck(id: &str) -> Deck {
             suit: Suit::Cups,
             image_key: format!("decks/{id}/icons/cups.png"),
         }],
+        style_guide: style_guide(id),
         provenance: GenerationProvenance {
             seed: 7,
             provider_id: "fake".into(),

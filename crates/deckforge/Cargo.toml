@@ -15,4 +15,5 @@ render.workspace = true
 
 [dev-dependencies]
 tokio.workspace = true
+async-trait.workspace = true
 tempfile = "3"

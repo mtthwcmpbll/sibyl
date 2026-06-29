@@ -62,6 +62,7 @@ dependencies = [
 name = "deckforge"
 version = "0.1.0"
 dependencies = [
+ "async-trait",
  "domain",
  "providers",
  "render",

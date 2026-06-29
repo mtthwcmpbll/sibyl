@@ -5,4 +5,4 @@
 
 pub mod compositor;
 
-pub use compositor::{compose, Layer, RenderError};
+pub use compositor::{compose, Color, Layer, RenderError};

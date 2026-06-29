@@ -10,7 +10,9 @@ pub mod suit;
 
 pub use court::{CourtCardId, CourtRank};
 pub use model::{
-    Deck, DeckCreationSession, GenerationProvenance, Personal, SessionStatus, StyleOption, SuitIcon,
+    Approval, CardStyleGuide, Deck, DeckCreationSession, FlourishRef, FrontLayout,
+    GenerationProvenance, Personal, Rect, SampleCard, SessionStatus, ShaderArea, StyleOption,
+    SuitIcon,
 };
 pub use suit::Suit;
 
