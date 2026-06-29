@@ -36,13 +36,13 @@ Cargo workspace + Tauri shell + React/Vite frontend (see plan.md → Project Str
 
 - [X] T001 Create Cargo workspace with member crate skeletons (domain, providers, render, storage, deckforge) in `Cargo.toml` and `crates/*/Cargo.toml` + `crates/*/src/lib.rs`
 - [X] T002 [P] Initialize Tauri 2 desktop shell in `src-tauri/` (`src-tauri/Cargo.toml`, `src-tauri/tauri.conf.json`, `src-tauri/src/main.rs`) depending on the workspace crates
-- [ ] T003 [P] Initialize React 18 + Vite 5 + TypeScript (strict) app in `frontend/` (`frontend/package.json`, `frontend/tsconfig.json`, `frontend/vite.config.ts`, `frontend/src/App.tsx`)
+- [X] T003 [P] Initialize React 18 + Vite 5 + TypeScript (strict) app in `frontend/` (`frontend/package.json`, `frontend/tsconfig.json`, `frontend/vite.config.ts`, `frontend/src/App.tsx`)
 - [X] T004 [P] Configure Rust formatting/linting in `rustfmt.toml` and a clippy lint script in `scripts/lint.sh`
-- [ ] T005 [P] Configure ESLint + Prettier + TS strict in `frontend/.eslintrc.cjs` and `frontend/.prettierrc`
-- [ ] T006 [P] Set up Vitest in `frontend/vitest.config.ts` with a sample passing test in `frontend/tests/smoke.test.ts`
+- [X] T005 [P] Configure ESLint + Prettier + TS strict in `frontend/.eslintrc.cjs` and `frontend/.prettierrc`
+- [X] T006 [P] Set up Vitest in `frontend/vitest.config.ts` with a sample passing test in `frontend/tests/smoke.test.ts`
 - [ ] T007 [P] Set up Storybook 8 in `frontend/.storybook/main.ts` and `frontend/.storybook/preview.ts`
 - [ ] T008 [P] Set up Playwright in `frontend/playwright.config.ts` configured to run against the mock backend
-- [ ] T009 [P] Add shared `FIXED_SEED` constant + test fixtures in `crates/domain/src/lib.rs` and `frontend/tests/fixtures.ts`
+- [X] T009 [P] Add shared `FIXED_SEED` constant + test fixtures in `crates/domain/src/lib.rs` and `frontend/tests/fixtures.ts`
 
 **Checkpoint**: Workspace builds, frontend runs, all four test runners execute an empty/sample suite.
 
@@ -74,11 +74,11 @@ primitives, IPC plumbing, frontend client port) that every story depends on.
 - [X] T026 Implement Tauri command plumbing: registry, provider+store construction from config/env, app-data path resolution in `src-tauri/src/main.rs`, `src-tauri/src/commands.rs`, `src-tauri/src/config.rs`
 - [X] T027 [P] Contract test for `get_asset` (resolves a stored key; `unknown_key` error) (write first) in `src-tauri/tests/get_asset.rs`
 - [X] T028 Implement `get_asset` command in `src-tauri/src/commands.rs`
-- [ ] T029 [P] Vitest spec: wizard state-machine transitions (write first) in `frontend/tests/wizard.test.ts`
-- [ ] T030 Implement `DeckForgeClient` port interface + shared TS types mirroring `contracts/ipc-commands.md` in `frontend/src/platform/client.ts`
-- [ ] T031 Implement `MockDeckForgeClient` (fixture-backed, honors the IPC contract) in `frontend/src/platform/mockClient.ts`
-- [ ] T032 Implement `TauriDeckForgeClient` (via `@tauri-apps/api` invoke) in `frontend/src/platform/tauriClient.ts`
-- [ ] T033 Implement wizard state machine + app shell/step router in `frontend/src/state/wizard.ts` and `frontend/src/App.tsx`
+- [X] T029 [P] Vitest spec: wizard state-machine transitions (write first) in `frontend/tests/wizard.test.ts`
+- [X] T030 Implement `DeckForgeClient` port interface + shared TS types mirroring `contracts/ipc-commands.md` in `frontend/src/platform/client.ts`
+- [X] T031 Implement `MockDeckForgeClient` (fixture-backed, honors the IPC contract) in `frontend/src/platform/mockClient.ts`
+- [X] T032 Implement `TauriDeckForgeClient` (via `@tauri-apps/api` invoke) in `frontend/src/platform/tauriClient.ts`
+- [X] T033 Implement wizard state machine + app shell/step router in `frontend/src/state/wizard.ts` and `frontend/src/App.tsx`
 
 **Checkpoint**: Seams exist and are unit-tested on the fake provider; the frontend can drive a no-op wizard against the mock client. User stories can now begin.
 
@@ -110,9 +110,9 @@ inputs.
 - [X] T038 [US1] Implement `generate_icon_styles` use-case (per-suit prompts via `compose_image_prompt` (T070), provider calls, store icons, ≥3 seeded options) in `crates/deckforge/src/icons.rs`
 - [X] T039 [US1] Implement `select_icon_style` use-case (record chosen option on session) in `crates/deckforge/src/icons.rs`
 - [X] T040 [US1] Wire `generate_icon_styles` + `select_icon_style` Tauri commands (with progress events + retryable errors) in `src-tauri/src/commands.rs`
-- [ ] T041 [P] [US1] `InputsView` (iconography rules + deck-style text, optional) in `frontend/src/views/InputsView.tsx`
-- [ ] T042 [P] [US1] `StyleChoiceView` (option grid, select, regenerate, progress, retry) in `frontend/src/views/StyleChoiceView.tsx`
-- [ ] T043 [US1] Wire US1 views to `DeckForgeClient` + wizard transitions (progress + retry on `provider_failed`) in `frontend/src/state/wizard.ts`
+- [X] T041 [P] [US1] `InputsView` (iconography rules + deck-style text, optional) in `frontend/src/views/InputsView.tsx`
+- [X] T042 [P] [US1] `StyleChoiceView` (option grid, select, regenerate, progress, retry) in `frontend/src/views/StyleChoiceView.tsx`
+- [X] T043 [US1] Wire US1 views to `DeckForgeClient` + wizard transitions (progress + retry on `provider_failed`) in `frontend/src/state/wizard.ts`
 
 **Checkpoint**: US1 is independently demoable — enter inputs, get options, pick one.
 
@@ -141,7 +141,7 @@ none chosen.
 - [X] T048 [US2] Implement style-guide prompt derivation from the chosen option in `crates/deckforge/src/style_guide.rs`
 - [X] T049 [US2] Implement `generate_style_guide` use-case: generate/store assets, assemble front layout + shader areas + flourishes, version the guide — in `crates/deckforge/src/style_guide.rs` and `crates/render/src/layout.rs`
 - [X] T050 [US2] Wire `generate_style_guide` Tauri command (progress + retryable errors) in `src-tauri/src/commands.rs`
-- [ ] T051 [US2] `StyleGuideView` (preview + proceed) wired to client in `frontend/src/views/StyleGuideView.tsx`
+- [X] T051 [US2] `StyleGuideView` (preview + proceed) wired to client in `frontend/src/views/StyleGuideView.tsx`
 
 **Checkpoint**: US1 + US2 work — choose a style and get a coherent card style guide.
 
@@ -172,9 +172,9 @@ single active deck; reject leaves no active deck and preserves inputs.
 - [X] T058 [US3] Implement `approve_deck` (promote draft → bundle, set active), `reject_and_restart` (discard draft artifacts, keep inputs), `get_active_deck` — in `crates/deckforge/src/approve.rs`
 - [X] T072 [US3] Assemble `GenerationProvenance` (rules, style, seed, chosen option, court card, provider/model id, composed prompts sent) into the draft and persist it in the approved bundle; unit test asserts it is sufficient to regenerate and that composed prompts are recorded — in `crates/deckforge/src/approve.rs` and `crates/deckforge/tests/provenance.rs` (FR-014/FR-019; Principles V/VI)
 - [X] T059 [US3] Wire `compose_sample_card` / `approve_deck` / `reject_and_restart` / `get_active_deck` Tauri commands in `src-tauri/src/commands.rs`
-- [ ] T060 [P] [US3] `CardFlip` component (face-down → flip reveal animation, ~60fps) in `frontend/src/components/CardFlip.tsx`
-- [ ] T061 [US3] `RevealView` (face-down card, flip, approve/reject) wired to client in `frontend/src/views/RevealView.tsx`
-- [ ] T062 [US3] Load active deck via `get_active_deck` on app startup in `frontend/src/App.tsx`
+- [X] T060 [P] [US3] `CardFlip` component (face-down → flip reveal animation, ~60fps) in `frontend/src/components/CardFlip.tsx`
+- [X] T061 [US3] `RevealView` (face-down card, flip, approve/reject) wired to client in `frontend/src/views/RevealView.tsx`
+- [X] T062 [US3] Load active deck via `get_active_deck` on app startup in `frontend/src/App.tsx`
 
 **Checkpoint**: Full feature works end-to-end — create, reveal, approve/reject, persist.
 
@@ -187,7 +187,7 @@ single active deck; reject leaves no active deck and preserves inputs.
 - [ ] T063 [P] End-to-end Rust pipeline integration test (fake provider, fixed seed): inputs → icons → style guide → sample → approve produces an active bundle in `tests/integration/pipeline.rs`
 - [ ] T064 [P] Provider-seam guard test: assert no vendor types referenced outside the `providers` adapter module in `crates/providers/tests/seam.rs`
 - [ ] T065 [P] Privacy check: assert personal fields are redacted in logs/Debug output (Principle VI) in `crates/domain/tests/redaction.rs`
-- [ ] T066 [P] Error/empty/loading-state polish across all views in `frontend/src/views/`
+- [X] T066 [P] Error/empty/loading-state polish across all views in `frontend/src/views/`
 - [ ] T067 [P] Run and validate `specs/001-deck-creation/quickstart.md` end-to-end (fake provider)
 - [ ] T068 UX/perf pass: progress visible within ~1s per step, flip ~60fps, UI never blocks — adjustments in `frontend/src/state/wizard.ts` and affected views
 

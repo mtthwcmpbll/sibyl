@@ -1,0 +1,245 @@
+:root {
+  --bg: #0f0d1a;
+  --panel: #1a1730;
+  --ink: #ece8ff;
+  --muted: #9c93c7;
+  --accent: #c9a24b;
+  --accent-2: #7b5cff;
+  --danger: #ff6b6b;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  background: radial-gradient(1200px 800px at 50% -10%, #241d44 0%, var(--bg) 60%);
+  color: var(--ink);
+}
+
+.app {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.app__header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.app__header h1 {
+  font-size: 2.4rem;
+  letter-spacing: 0.08em;
+  margin: 0;
+  color: var(--accent);
+}
+
+.tagline {
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 0.25rem;
+}
+
+.view {
+  background: var(--panel);
+  border: 1px solid #2c2750;
+  border-radius: 16px;
+  padding: 1.75rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.view h2 {
+  margin-top: 0;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+label {
+  display: block;
+  margin: 1rem 0 0.35rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+textarea {
+  width: 100%;
+  background: #131027;
+  color: var(--ink);
+  border: 1px solid #332c5e;
+  border-radius: 10px;
+  padding: 0.75rem;
+  font: inherit;
+  resize: vertical;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 10px;
+  border: 1px solid #3b3470;
+  background: #211c3e;
+  color: var(--ink);
+  padding: 0.6rem 1.1rem;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button.primary {
+  background: linear-gradient(180deg, var(--accent-2), #5a3fd6);
+  border-color: transparent;
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  justify-content: flex-end;
+}
+
+.primary {
+  margin-top: 1.25rem;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.style-option {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 1rem;
+  background: #16132b;
+}
+
+.style-option.is-selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent) inset;
+}
+
+.style-option__icons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+}
+
+.suit-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+}
+
+.style-guide__assets {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.style-guide__assets figcaption,
+.deck-suits figcaption {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.sg-asset {
+  width: 96px;
+  height: 96px;
+  border-radius: 10px;
+}
+
+.style-guide__meta {
+  margin-top: 1rem;
+  color: var(--muted);
+}
+
+/* Card flip */
+.card-flip {
+  width: 220px;
+  height: 333px;
+  margin: 1.5rem auto;
+  perspective: 1200px;
+}
+
+.card-flip__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.card-flip__inner.is-faceup {
+  transform: rotateY(180deg);
+}
+
+.card-flip__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid var(--accent);
+}
+
+.card-flip__front {
+  transform: rotateY(180deg);
+}
+
+.card-flip__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.court-name {
+  text-align: center;
+  text-transform: capitalize;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+}
+
+.deck-suits {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.error-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--danger);
+  border-radius: 10px;
+  background: rgba(255, 107, 107, 0.08);
+  color: #ffd5d5;
+}
+
+.error-banner__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.app.loading {
+  text-align: center;
+  color: var(--muted);
+  padding-top: 6rem;
+}
