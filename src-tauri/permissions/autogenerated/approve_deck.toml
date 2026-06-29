@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-approve-deck"
+description = "Enables the approve_deck command without any pre-configured scope."
+commands.allow = ["approve_deck"]
+
+[[permission]]
+identifier = "deny-approve-deck"
+description = "Denies the approve_deck command without any pre-configured scope."
+commands.deny = ["approve_deck"]

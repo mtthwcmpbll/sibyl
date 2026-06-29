@@ -1,0 +1,16 @@
+[package]
+name = "providers"
+edition.workspace = true
+version.workspace = true
+license.workspace = true
+
+[dependencies]
+serde.workspace = true
+async-trait.workspace = true
+image.workspace = true
+tokio = { workspace = true }
+# SVG → PNG rasterization for the Claude (vector-art) adapter. Pure Rust, no system deps.
+resvg = "0.44"
+
+[dev-dependencies]
+tokio.workspace = true

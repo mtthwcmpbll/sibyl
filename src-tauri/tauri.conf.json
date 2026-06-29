@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Sibyl",
+  "version": "0.1.0",
+  "identifier": "com.123elm.sibyl",
+  "build": {
+    "frontendDist": "../frontend/dist",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "pnpm --dir ../frontend dev",
+    "beforeBuildCommand": "pnpm --dir ../frontend build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Sibyl — your personal tarot deck",
+        "width": 1100,
+        "height": 800,
+        "minWidth": 800,
+        "minHeight": 600
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": ["icons/icon.png"]
+  }
+}

@@ -1,0 +1,19 @@
+[package]
+name = "sibyl"
+edition.workspace = true
+version.workspace = true
+license.workspace = true
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+domain.workspace = true
+providers.workspace = true
+storage.workspace = true
+render.workspace = true
+
+[dev-dependencies]
+tokio.workspace = true
+async-trait.workspace = true
+tempfile = "3"

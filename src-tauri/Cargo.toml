@@ -1,0 +1,37 @@
+[package]
+name = "sibyl-app"
+edition = "2021"
+version = "0.1.0"
+license = "MIT"
+description = "Personal tarot deck — desktop shell"
+
+# NOTE: This crate is intentionally excluded from the root workspace because building
+# Tauri on Linux requires system libraries (webkit2gtk-4.1, libsoup-3, etc.). Build it
+# separately once those are installed:
+#   sudo apt install libwebkit2gtk-4.1-dev libsoup-3.0-dev build-essential \
+#       curl wget file libssl-dev libayatana-appindicator3-dev librsvg2-dev
+#   cargo tauri dev      # (from this directory, with the frontend running)
+
+[lib]
+name = "sibyl_app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+
+# Core crates (path deps into the workspace). All command logic lives in app-core, which is
+# built and tested headlessly; this crate only wires it into Tauri.
+domain = { path = "../crates/domain" }
+sibyl = { path = "../crates/sibyl" }
+app-core = { path = "../crates/app-core" }
+
+[dev-dependencies]
+# The `test` feature provides Tauri's MockRuntime for headless IPC tests (no window/display).
+tauri = { version = "2", features = ["test"] }
+providers = { path = "../crates/providers" }
+storage = { path = "../crates/storage" }
+serde_json = "1"
+tempfile = "3"

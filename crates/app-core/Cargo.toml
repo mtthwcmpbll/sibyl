@@ -1,0 +1,21 @@
+[package]
+name = "app-core"
+edition.workspace = true
+version.workspace = true
+license.workspace = true
+
+# The Tauri-free command layer: arg mapping, use-case calls, error→code mapping, and asset
+# encoding. Lives in the workspace so it is built and tested headlessly (no webkit needed).
+# The Tauri shell (src-tauri) is a thin wrapper over these functions.
+
+[dependencies]
+serde = { workspace = true }
+base64 = "0.22"
+domain = { workspace = true }
+providers = { workspace = true }
+storage = { workspace = true }
+sibyl = { path = "../sibyl" }
+
+[dev-dependencies]
+tokio.workspace = true
+tempfile = "3"

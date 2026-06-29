@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-select-icon-style"
+description = "Enables the select_icon_style command without any pre-configured scope."
+commands.allow = ["select_icon_style"]
+
+[[permission]]
+identifier = "deny-select-icon-style"
+description = "Denies the select_icon_style command without any pre-configured scope."
+commands.deny = ["select_icon_style"]

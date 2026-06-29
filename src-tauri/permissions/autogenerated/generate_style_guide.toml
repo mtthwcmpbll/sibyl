@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-generate-style-guide"
+description = "Enables the generate_style_guide command without any pre-configured scope."
+commands.allow = ["generate_style_guide"]
+
+[[permission]]
+identifier = "deny-generate-style-guide"
+description = "Denies the generate_style_guide command without any pre-configured scope."
+commands.deny = ["generate_style_guide"]

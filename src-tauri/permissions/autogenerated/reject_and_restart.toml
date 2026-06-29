@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-reject-and-restart"
+description = "Enables the reject_and_restart command without any pre-configured scope."
+commands.allow = ["reject_and_restart"]
+
+[[permission]]
+identifier = "deny-reject-and-restart"
+description = "Denies the reject_and_restart command without any pre-configured scope."
+commands.deny = ["reject_and_restart"]
