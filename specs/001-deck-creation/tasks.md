@@ -184,12 +184,12 @@ single active deck; reject leaves no active deck and preserves inputs.
 
 **Purpose**: End-to-end verification and constitution-alignment hardening.
 
-- [ ] T063 [P] End-to-end Rust pipeline integration test (fake provider, fixed seed): inputs → icons → style guide → sample → approve produces an active bundle in `tests/integration/pipeline.rs`
-- [ ] T064 [P] Provider-seam guard test: assert no vendor types referenced outside the `providers` adapter module in `crates/providers/tests/seam.rs`
-- [ ] T065 [P] Privacy check: assert personal fields are redacted in logs/Debug output (Principle VI) in `crates/domain/tests/redaction.rs`
+- [X] T063 [P] End-to-end Rust pipeline integration test (fake provider, fixed seed): inputs → icons → style guide → sample → approve produces an active bundle in `tests/integration/pipeline.rs`
+- [X] T064 [P] Provider-seam guard test: assert no vendor types referenced outside the `providers` adapter module in `crates/providers/tests/seam.rs`
+- [X] T065 [P] Privacy check: assert personal fields are redacted in logs/Debug output (Principle VI) in `crates/domain/tests/redaction.rs`
 - [X] T066 [P] Error/empty/loading-state polish across all views in `frontend/src/views/`
-- [ ] T067 [P] Run and validate `specs/001-deck-creation/quickstart.md` end-to-end (fake provider)
-- [ ] T068 UX/perf pass: progress visible within ~1s per step, flip ~60fps, UI never blocks — adjustments in `frontend/src/state/wizard.ts` and affected views
+- [X] T067 [P] Run and validate `specs/001-deck-creation/quickstart.md` end-to-end (fake provider)
+- [X] T068 UX/perf pass: progress visible within ~1s per step, flip ~60fps, UI never blocks — adjustments in `frontend/src/state/wizard.ts` and affected views
 
 ---
 
