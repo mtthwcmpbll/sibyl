@@ -40,8 +40,8 @@ Cargo workspace + Tauri shell + React/Vite frontend (see plan.md → Project Str
 - [X] T004 [P] Configure Rust formatting/linting in `rustfmt.toml` and a clippy lint script in `scripts/lint.sh`
 - [X] T005 [P] Configure ESLint + Prettier + TS strict in `frontend/.eslintrc.cjs` and `frontend/.prettierrc`
 - [X] T006 [P] Set up Vitest in `frontend/vitest.config.ts` with a sample passing test in `frontend/tests/smoke.test.ts`
-- [ ] T007 [P] Set up Storybook 8 in `frontend/.storybook/main.ts` and `frontend/.storybook/preview.ts`
-- [ ] T008 [P] Set up Playwright in `frontend/playwright.config.ts` configured to run against the mock backend
+- [X] T007 [P] Set up Storybook 8 in `frontend/.storybook/main.ts` and `frontend/.storybook/preview.ts`
+- [X] T008 [P] Set up Playwright in `frontend/playwright.config.ts` configured to run against the mock backend
 - [X] T009 [P] Add shared `FIXED_SEED` constant + test fixtures in `crates/domain/src/lib.rs` and `frontend/tests/fixtures.ts`
 
 **Checkpoint**: Workspace builds, frontend runs, all four test runners execute an empty/sample suite.
@@ -99,10 +99,10 @@ inputs.
 
 - [X] T034 [P] [US1] Rust contract test: `generate_icon_styles` returns ≥3 options, all suits present, deterministic by seed; `select_icon_style` records choice — in `src-tauri/tests/us1_icons.rs`
 - [X] T035 [P] [US1] Rust unit test: `deckforge` generate-icons use-case (per-suit prompt build, fake provider, ≥3 options) in `crates/deckforge/tests/icons.rs`
-- [ ] T036 [P] [US1] Storybook stories: `StyleOption` and `StyleChoice` grid (loading / options / regenerating states) in `frontend/src/components/StyleOption.stories.tsx`
-- [ ] T037 [P] [US1] Playwright: inputs → generate → ≥3 options → regenerate (inputs preserved) → select → proceed (mock backend) in `frontend/tests/us1-style-choice.spec.ts`
+- [X] T036 [P] [US1] Storybook stories: `StyleOption` and `StyleChoice` grid (loading / options / regenerating states) in `frontend/src/components/StyleOption.stories.tsx`
+- [X] T037 [P] [US1] Playwright: inputs → generate → ≥3 options → regenerate (inputs preserved) → select → proceed (mock backend) in `frontend/tests/us1-style-choice.spec.ts`
 - [X] T069 [P] [US1] Rust unit test: `compose_image_prompt` makes iconography rules authoritative over deck-style text (write first) in `crates/deckforge/tests/prompt.rs` (FR-019)
-- [ ] T071 [P] [US1] Failure-path tests: a provider error surfaces a retryable error and preserves entered inputs/selection — Rust contract in `src-tauri/tests/failure_retry.rs` and Playwright in `frontend/tests/failure-retry.spec.ts` (FR-017, SC-006; pattern reused by US2/US3)
+- [X] T071 [P] [US1] Failure-path tests: a provider error surfaces a retryable error and preserves entered inputs/selection — Rust contract in `src-tauri/tests/failure_retry.rs` and Playwright in `frontend/tests/failure-retry.spec.ts` (FR-017, SC-006; pattern reused by US2/US3)
 
 ### Implementation for User Story 1
 
@@ -133,8 +133,8 @@ none chosen.
 
 - [X] T044 [P] [US2] Rust contract test: `generate_style_guide` derives prompt from chosen style, returns border/chrome + back + front layout + ≥1 shader area + flourishes; `no_style_selected` error — in `src-tauri/tests/us2_style_guide.rs`
 - [X] T045 [P] [US2] Rust unit test: `deckforge` style-guide use-case (prompt auto-derived, fake provider, versioned guide) in `crates/deckforge/tests/style_guide.rs`
-- [ ] T046 [P] [US2] Storybook stories: `StyleGuidePreview` (loading / complete) in `frontend/src/components/StyleGuidePreview.stories.tsx`
-- [ ] T047 [P] [US2] Playwright: selected style → generate guide → preview shows required elements (mock backend) in `frontend/tests/us2-style-guide.spec.ts`
+- [X] T046 [P] [US2] Storybook stories: `StyleGuidePreview` (loading / complete) in `frontend/src/components/StyleGuidePreview.stories.tsx`
+- [X] T047 [P] [US2] Playwright: selected style → generate guide → preview shows required elements (mock backend) in `frontend/tests/us2-style-guide.spec.ts`
 
 ### Implementation for User Story 2
 
@@ -163,8 +163,8 @@ single active deck; reject leaves no active deck and preserves inputs.
 - [X] T052 [P] [US3] Rust contract tests: `compose_sample_card` (always a court card, seeded, returns front/back keys), `approve_deck` (sets exactly one active), `reject_and_restart` (preserves inputs, no active), `get_active_deck` — in `src-tauri/tests/us3_commands.rs`
 - [X] T053 [P] [US3] Rust unit test: compose use-case builds court-card front (icon + front + imagery + chrome) and back; byte-stable offline (reproducibility) in `crates/deckforge/tests/sample.rs`
 - [X] T054 [P] [US3] Rust unit test: approve promotes draft → bundle + flips active pointer; reject leaves existing active unchanged in `crates/deckforge/tests/approve.rs`
-- [ ] T055 [P] [US3] Storybook stories: `CardFlip` (face-down → revealed) in `frontend/src/components/CardFlip.stories.tsx`
-- [ ] T056 [P] [US3] Playwright: compose → face-down → flip → approve → active deck persists on reload; reject → back to inputs with no active deck (mock backend) in `frontend/tests/us3-reveal-approve.spec.ts`
+- [X] T055 [P] [US3] Storybook stories: `CardFlip` (face-down → revealed) in `frontend/src/components/CardFlip.stories.tsx`
+- [X] T056 [P] [US3] Playwright: compose → face-down → flip → approve → active deck persists on reload; reject → back to inputs with no active deck (mock backend) in `frontend/tests/us3-reveal-approve.spec.ts`
 
 ### Implementation for User Story 3
 
