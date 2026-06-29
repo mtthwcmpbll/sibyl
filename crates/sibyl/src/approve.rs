@@ -1,7 +1,7 @@
 use domain::{CardStyleGuide, Deck, FlourishRef, SuitIcon};
 
-use crate::error::{DeckForgeError, Result};
-use crate::DeckForge;
+use crate::error::{Result, SibylError};
+use crate::Sibyl;
 
 /// Input returned to the wizard after a rejection so it can be edited and retried (FR-013).
 /// Only the deck style is owner-provided; the iconography rules are a fixed app resource.
@@ -16,7 +16,7 @@ fn relocate(key: &str, sid: &str, deck_id: &str) -> String {
     key.replacen(&from, &to, 1)
 }
 
-impl DeckForge {
+impl Sibyl {
     fn copy(&self, from: &str, to: &str) -> Result<()> {
         let bytes = self.store.get(from)?;
         self.store.put(to, &bytes)?;
@@ -28,15 +28,15 @@ impl DeckForge {
     pub fn approve_deck(&self, session_id: &str) -> Result<Deck> {
         let session = self.load_session(session_id)?;
         if session.sample_card.is_none() {
-            return Err(DeckForgeError::NothingToApprove);
+            return Err(SibylError::NothingToApprove);
         }
         let guide = session
             .style_guide
             .clone()
-            .ok_or(DeckForgeError::NoStyleGuide)?;
+            .ok_or(SibylError::NoStyleGuide)?;
         let chosen = session
             .chosen_option()
-            .ok_or(DeckForgeError::NoStyleSelected)?
+            .ok_or(SibylError::NoStyleSelected)?
             .clone();
 
         let deck_id = format!("deck-{}", session.id);

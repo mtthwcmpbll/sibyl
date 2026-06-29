@@ -2,11 +2,11 @@ use domain::rng::sub_seed;
 use domain::{CardStyleGuide, FlourishRef, FrontLayout, Rect, SessionStatus, ShaderArea};
 use providers::{ImageRequest, Size};
 
-use crate::error::{DeckForgeError, Result};
+use crate::error::{Result, SibylError};
 use crate::prompt::compose_image_prompt;
-use crate::DeckForge;
+use crate::Sibyl;
 
-impl DeckForge {
+impl Sibyl {
     /// Auto-derive a prompt from the chosen suit-icon style and generate the overall card
     /// style guide — border/chrome, card back, front layout, shader/UV areas, flourishes
     /// (FR-007/008). The owner does not restate the style.
@@ -14,7 +14,7 @@ impl DeckForge {
         let mut session = self.load_session(session_id)?;
         let chosen = session
             .chosen_option()
-            .ok_or(DeckForgeError::NoStyleSelected)?
+            .ok_or(SibylError::NoStyleSelected)?
             .clone();
 
         let rules = session.iconography_rules.as_str().to_string();

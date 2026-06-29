@@ -2,12 +2,12 @@
 //! full happy path, asset encoding, and the error→code mapping from contracts/ipc-commands.md.
 
 use app_core as app;
-use deckforge::DeckForge;
 use providers::FakeProvider;
+use sibyl::Sibyl;
 use storage::FsStore;
 
-fn forge(dir: &std::path::Path) -> DeckForge {
-    DeckForge::new(
+fn forge(dir: &std::path::Path) -> Sibyl {
+    Sibyl::new(
         Box::new(FakeProvider::new()),
         Box::new(FakeProvider::new()),
         Box::new(FsStore::new(dir)),
@@ -65,10 +65,10 @@ async fn errors_map_to_contract_codes() {
 
 #[test]
 fn app_data_dir_honors_env_override() {
-    std::env::set_var("DECKFORGE_DATA_DIR", "/tmp/deckforge-test-dir");
+    std::env::set_var("SIBYL_DATA_DIR", "/tmp/sibyl-test-dir");
     assert_eq!(
         app::app_data_dir(),
-        std::path::PathBuf::from("/tmp/deckforge-test-dir")
+        std::path::PathBuf::from("/tmp/sibyl-test-dir")
     );
-    std::env::remove_var("DECKFORGE_DATA_DIR");
+    std::env::remove_var("SIBYL_DATA_DIR");
 }

@@ -2,9 +2,9 @@ use domain::rng::sub_seed;
 use domain::{DeckCreationSession, Personal, SessionStatus, StyleOption, Suit, SuitIcon};
 use providers::{ImageRequest, Size};
 
-use crate::error::{DeckForgeError, Result};
+use crate::error::{Result, SibylError};
 use crate::prompt::compose_image_prompt;
-use crate::DeckForge;
+use crate::Sibyl;
 
 /// Input for generating (or regenerating) a round of suit-icon style options (FR-003/006).
 /// The iconography rules are NOT here — they are an app resource ([`crate::ICONOGRAPHY_RULES`]);
@@ -27,7 +27,7 @@ pub struct IconStylesResult {
     pub style_options: Vec<StyleOption>,
 }
 
-impl DeckForge {
+impl Sibyl {
     /// Generate a round of cohesive suit-icon style options. Idempotent per (session, round):
     /// the same base seed reproduces the same options; regenerating advances the round.
     pub async fn generate_icon_styles(
@@ -119,7 +119,7 @@ impl DeckForge {
         let mut session = self.load_session(session_id)?;
         let exists = session.style_options.iter().any(|o| o.id == option_id);
         if !exists {
-            return Err(DeckForgeError::UnknownOption(option_id.to_string()));
+            return Err(SibylError::UnknownOption(option_id.to_string()));
         }
         session.chosen_style_option_id = Some(option_id.to_string());
         session.status = SessionStatus::StyleGuide;

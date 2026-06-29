@@ -1,5 +1,5 @@
-use deckforge::compose_image_prompt;
 use providers::FakeProvider;
+use sibyl::compose_image_prompt;
 
 #[tokio::test]
 async fn rules_are_authoritative_over_style() {

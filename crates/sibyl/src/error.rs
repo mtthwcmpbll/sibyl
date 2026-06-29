@@ -3,7 +3,7 @@ use thiserror::Error;
 /// Orchestration-level errors. Carries a `retryable` hint so the wizard can offer retry
 /// (FR-017) without losing the owner's inputs.
 #[derive(Debug, Error)]
-pub enum DeckForgeError {
+pub enum SibylError {
     #[error("provider failed: {message}")]
     Provider { message: String, retryable: bool },
     #[error("storage error: {0}")]
@@ -24,11 +24,11 @@ pub enum DeckForgeError {
     InvalidState(String),
 }
 
-impl DeckForgeError {
+impl SibylError {
     pub fn retryable(&self) -> bool {
         matches!(
             self,
-            DeckForgeError::Provider {
+            SibylError::Provider {
                 retryable: true,
                 ..
             }
@@ -36,25 +36,25 @@ impl DeckForgeError {
     }
 }
 
-impl From<providers::ProviderError> for DeckForgeError {
+impl From<providers::ProviderError> for SibylError {
     fn from(e: providers::ProviderError) -> Self {
-        DeckForgeError::Provider {
+        SibylError::Provider {
             message: e.message,
             retryable: e.retryable,
         }
     }
 }
 
-impl From<storage::StoreError> for DeckForgeError {
+impl From<storage::StoreError> for SibylError {
     fn from(e: storage::StoreError) -> Self {
-        DeckForgeError::Storage(e.to_string())
+        SibylError::Storage(e.to_string())
     }
 }
 
-impl From<render::RenderError> for DeckForgeError {
+impl From<render::RenderError> for SibylError {
     fn from(e: render::RenderError) -> Self {
-        DeckForgeError::Render(e.to_string())
+        SibylError::Render(e.to_string())
     }
 }
 
-pub type Result<T> = std::result::Result<T, DeckForgeError>;
+pub type Result<T> = std::result::Result<T, SibylError>;

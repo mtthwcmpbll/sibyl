@@ -56,7 +56,7 @@ pub trait ImageProvider: Send + Sync {
 
 ## Prompt composition (rules authoritative)
 
-Image providers expose only a single `prompt` (no system channel). The `deckforge` layer
+Image providers expose only a single `prompt` (no system channel). The `sibyl` layer
 therefore composes image prompts via the `TextProvider` from two inputs — the **iconography
 rules (authoritative / system-level)** and the **deck-style text (aesthetic direction)** —
 using a `compose_image_prompt(rules, style) -> String` helper. Rules take precedence on
@@ -67,7 +67,7 @@ depending on any one model's prompt conventions.
 ## Selection & configuration
 
 - The active provider(s) are constructed in the Tauri shell (`src-tauri`) from configuration
-  and injected into `deckforge`; domain/render/orchestration depend only on the traits.
+  and injected into `sibyl`; domain/render/orchestration depend only on the traits.
 - Default configuration uses `FakeProvider` so a fresh checkout runs end-to-end offline.
 
 ## Contract tests (written first)

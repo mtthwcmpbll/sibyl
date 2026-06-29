@@ -23,7 +23,7 @@ test("US3: sample begins face down, flips, and approval persists the deck", asyn
   await expect(page.getByTestId("done-view")).toBeVisible();
 
   // The approved deck persists across a reload (SC-003/004).
-  const stored = await page.evaluate(() => localStorage.getItem("deckforge.activeDeck"));
+  const stored = await page.evaluate(() => localStorage.getItem("sibyl.activeDeck"));
   expect(stored).toBeTruthy();
 });
 
@@ -35,6 +35,6 @@ test("US3: rejecting returns to inputs with inputs preserved and no active deck"
 
   await expect(page.getByTestId("generate")).toBeVisible();
   await expect(page.getByTestId("style-input")).toHaveValue("indigo and gold");
-  const stored = await page.evaluate(() => localStorage.getItem("deckforge.activeDeck"));
+  const stored = await page.evaluate(() => localStorage.getItem("sibyl.activeDeck"));
   expect(stored).toBeNull();
 });

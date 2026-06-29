@@ -1,4 +1,4 @@
-import type { DeckForgeClient, GenerateIconStylesInput } from "./client";
+import type { SibylClient, GenerateIconStylesInput } from "./client";
 import type {
   AssetResponse,
   CardStyleGuide,
@@ -14,7 +14,7 @@ import type {
 
 const SUITS: Suit[] = ["cups", "wands", "swords", "pentacles"];
 const RANKS: CourtRank[] = ["page", "knight", "queen", "king"];
-const ACTIVE_KEY = "deckforge.activeDeck";
+const ACTIVE_KEY = "sibyl.activeDeck";
 
 function fnv1a(s: string): number {
   let h = 0x811c9dc5;
@@ -50,7 +50,7 @@ interface MockSession {
  * — in Storybook, Playwright, and a plain web build — with no Tauri and no network. Mirrors
  * the backend's semantics closely enough to drive every wizard path.
  */
-export class MockDeckForgeClient implements DeckForgeClient {
+export class MockSibylClient implements SibylClient {
   private sessions = new Map<string, MockSession>();
   private attempts = new Map<string, number>();
 

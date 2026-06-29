@@ -46,7 +46,7 @@ recorded here with rationale and alternatives.
 - **Decision**: Image-generation prompts (suit icons, style-guide art, sample imagery) are
   composed by the `TextProvider` from two parts — the **iconography rules as a system-level,
   authoritative constraint** and the **deck-style text as aesthetic direction**. A
-  `compose_image_prompt(rules, style)` helper in `deckforge` yields the final
+  `compose_image_prompt(rules, style)` helper in `sibyl` yields the final
   `ImageRequest.prompt`; the rules win on any conflict. The composed prompt is recorded in
   provenance.
 - **Rationale**: Honors the owner's intent that the rules are a "system prompt component"
@@ -101,10 +101,10 @@ recorded here with rationale and alternatives.
 - **Alternatives**: SQLite/embedded DB — rejected for MVP (heavier; a file bundle is simpler,
   inspectable, and directly "bakeable"). TOML manifest — rejected (JSON travels better to web).
 
-## 7. Frontend ↔ core boundary — DeckForgeClient port
+## 7. Frontend ↔ core boundary — SibylClient port
 
-- **Decision**: A TypeScript `DeckForgeClient` interface defines all core operations. A
-  `TauriDeckForgeClient` implements it via `@tauri-apps/api` `invoke`; a `MockDeckForgeClient`
+- **Decision**: A TypeScript `SibylClient` interface defines all core operations. A
+  `TauriSibylClient` implements it via `@tauri-apps/api` `invoke`; a `MockSibylClient`
   (and later an HTTP impl) implements it for Storybook/Playwright/web. No component imports
   Tauri APIs directly.
 - **Rationale**: Enforces the frontend-portability constraint and is what makes the UI testable
@@ -132,5 +132,5 @@ recorded here with rationale and alternatives.
 | Randomness/repro | ChaCha20 seeded RNG + provenance + stored bytes |
 | Court-card selection | Seeded-random among 16 court cards, recorded |
 | Storage/bundle | Store trait, filesystem default, JSON manifest bundle |
-| FE↔core boundary | DeckForgeClient port (Tauri + mock impls) |
+| FE↔core boundary | SibylClient port (Tauri + mock impls) |
 | Async/progress | tokio + Tauri events; non-blocking UI |

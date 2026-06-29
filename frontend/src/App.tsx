@@ -53,7 +53,7 @@ function WizardShell({ wizard }: { wizard: Wizard }) {
   return (
     <main className="app" data-step={state.step}>
       <header className="app__header">
-        <h1>Deckforge</h1>
+        <h1>Sibyl</h1>
         <p className="tagline">a tarot deck made for you, because it is</p>
       </header>
       {view}

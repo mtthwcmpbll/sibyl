@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
-import { MockDeckForgeClient } from "../src/platform/mockClient";
+import { MockSibylClient } from "../src/platform/mockClient";
 import { createWizard } from "../src/state/wizard";
 import { FAILING_STYLE, FIXED_STYLE } from "./fixtures";
 
 function newWizard() {
-  return createWizard(new MockDeckForgeClient());
+  return createWizard(new MockSibylClient());
 }
 
 beforeEach(() => {
@@ -58,7 +58,7 @@ describe("wizard state machine", () => {
     expect(s.step).toBe("inputs");
     expect(s.style).toBe(FIXED_STYLE);
     expect(s.sessionId).toBeUndefined();
-    expect(await new MockDeckForgeClient().getActiveDeck()).toBeNull();
+    expect(await new MockSibylClient().getActiveDeck()).toBeNull();
   });
 
   it("regenerate keeps inputs and advances the round (FR-006)", async () => {

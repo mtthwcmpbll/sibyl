@@ -112,10 +112,10 @@ crates/
 ├── render/            # Canonical CPU compositing (tiny-skia/resvg/image/ab_glyph):
 │                      #   suit icons, style-guide layout, sample court-card front/back.
 ├── storage/           # Store trait + filesystem impl (default). Bundle read/write.
-└── deckforge/         # Orchestration use-cases: generate_icon_styles, generate_style_guide,
+└── sibyl/         # Orchestration use-cases: generate_icon_styles, generate_style_guide,
                        #   compose_sample_card, approve_deck. Wires domain+providers+render+storage.
 
-src-tauri/             # Thin Tauri 2 shell: #[tauri::command] wrappers over deckforge,
+src-tauri/             # Thin Tauri 2 shell: #[tauri::command] wrappers over sibyl,
 ├── src/               #   app-data path resolution, provider/store construction from config.
 └── tauri.conf.json
 
@@ -123,7 +123,7 @@ frontend/              # TypeScript + React + Vite web app (runs in Tauri OR pla
 ├── src/
 │   ├── components/    # Presentational components (Storybook stories = component tests)
 │   ├── views/         # Wizard steps: Inputs, StyleChoice, StyleGuide, Reveal/Approve
-│   ├── platform/      # DeckForgeClient port: tauri-invoke impl + mock/http impl
+│   ├── platform/      # SibylClient port: tauri-invoke impl + mock/http impl
 │   └── state/         # Wizard state machine (TS), provider-agnostic of transport
 ├── tests/             # Vitest unit; Playwright e2e (against mock backend)
 └── .storybook/
@@ -133,10 +133,10 @@ tests/
 ```
 
 **Structure Decision**: A Cargo workspace isolates the constitution's seams as crates
-(`domain`, `providers`, `render`, `storage`) with orchestration in `deckforge`; `src-tauri`
+(`domain`, `providers`, `render`, `storage`) with orchestration in `sibyl`; `src-tauri`
 is a thin shell depending on those crates so the core stays portable to a future FaaS draw
 service. The `frontend` is a standalone React/Vite app that talks to the core only through a
-`DeckForgeClient` port (Tauri-invoke implementation for desktop, mock/HTTP implementation for
+`SibylClient` port (Tauri-invoke implementation for desktop, mock/HTTP implementation for
 Storybook/Playwright/web) — satisfying the frontend-portability constraint and making the UI
 testable without the desktop shell. May start consolidated and split further if a crate grows;
 the seams (traits) are the non-negotiable part, not the crate count.

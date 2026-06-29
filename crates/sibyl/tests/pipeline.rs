@@ -1,15 +1,15 @@
 //! T063 — end-to-end pipeline on the fake provider + fixed seed: inputs → icons → style
 //! guide → sample → approve yields a single active, self-contained bundle (Principles III/V).
 
-use deckforge::{DeckForge, GenerateIconStyles};
 use domain::FIXED_SEED;
 use providers::FakeProvider;
+use sibyl::{GenerateIconStyles, Sibyl};
 use storage::{FsStore, Store};
 
 #[tokio::test]
 async fn full_pipeline_produces_an_active_self_contained_bundle() {
     let dir = tempfile::tempdir().unwrap();
-    let forge = DeckForge::new(
+    let forge = Sibyl::new(
         Box::new(FakeProvider::new()),
         Box::new(FakeProvider::new()),
         Box::new(FsStore::new(dir.path())),

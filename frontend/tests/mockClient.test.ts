@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
-import { MockDeckForgeClient } from "../src/platform/mockClient";
+import { MockSibylClient } from "../src/platform/mockClient";
 import { courtCardSlug, type CourtRank } from "../src/platform";
 import { ALL_SUITS, FIXED_STYLE } from "./fixtures";
 
@@ -8,7 +8,7 @@ const RANKS: CourtRank[] = ["page", "knight", "queen", "king"];
 
 beforeEach(() => localStorage.clear());
 
-async function driveToSample(c: MockDeckForgeClient) {
+async function driveToSample(c: MockSibylClient) {
   const r = await c.generateIconStyles({
     deckStyleText: FIXED_STYLE,
   });
@@ -18,9 +18,9 @@ async function driveToSample(c: MockDeckForgeClient) {
   return { sessionId: r.sessionId, sample };
 }
 
-describe("MockDeckForgeClient contract", () => {
+describe("MockSibylClient contract", () => {
   it("returns at least three options, each covering every suit", async () => {
-    const c = new MockDeckForgeClient();
+    const c = new MockSibylClient();
     const r = await c.generateIconStyles({
       deckStyleText: FIXED_STYLE,
     });
@@ -31,17 +31,17 @@ describe("MockDeckForgeClient contract", () => {
   });
 
   it("is deterministic in session id for the same inputs", async () => {
-    const a = await new MockDeckForgeClient().generateIconStyles({
+    const a = await new MockSibylClient().generateIconStyles({
       deckStyleText: FIXED_STYLE,
     });
-    const b = await new MockDeckForgeClient().generateIconStyles({
+    const b = await new MockSibylClient().generateIconStyles({
       deckStyleText: FIXED_STYLE,
     });
     expect(b.sessionId).toBe(a.sessionId);
   });
 
   it("composes a sample that is always a court card", async () => {
-    const c = new MockDeckForgeClient();
+    const c = new MockSibylClient();
     const { sample } = await driveToSample(c);
     expect(RANKS).toContain(sample.courtCard.rank);
     expect(ALL_SUITS).toContain(sample.courtCard.suit);
@@ -50,7 +50,7 @@ describe("MockDeckForgeClient contract", () => {
   });
 
   it("approve persists the active deck; reject does not", async () => {
-    const c = new MockDeckForgeClient();
+    const c = new MockSibylClient();
     const { sessionId } = await driveToSample(c);
     const deck = await c.approveDeck(sessionId);
     expect(deck.active).toBe(true);
@@ -58,7 +58,7 @@ describe("MockDeckForgeClient contract", () => {
   });
 
   it("rejects unknown sessions and missing-selection errors with contract codes", async () => {
-    const c = new MockDeckForgeClient();
+    const c = new MockSibylClient();
     await expect(c.generateStyleGuide("nope")).rejects.toMatchObject({
       code: "unknown_session",
     });

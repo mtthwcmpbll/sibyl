@@ -1,4 +1,4 @@
-import type { DeckForgeClient } from "../platform/client";
+import type { SibylClient } from "../platform/client";
 import {
   isClientError,
   type CardStyleGuide,
@@ -54,7 +54,7 @@ export interface Wizard {
  * The wizard's logic, independent of React (so it is unit-testable with Vitest). Holds state,
  * orchestrates the client, and tracks busy/error for every async step (FR-016/017).
  */
-export function createWizard(client: DeckForgeClient): Wizard {
+export function createWizard(client: SibylClient): Wizard {
   let state = initialState();
   const listeners = new Set<() => void>();
 

@@ -27,12 +27,12 @@ pub struct ClaudeCliProvider {
 }
 
 impl ClaudeCliProvider {
-    /// Construct from environment: `DECKFORGE_CLAUDE_BIN` (default `claude`) and optional
-    /// `DECKFORGE_CLAUDE_MODEL`.
+    /// Construct from environment: `SIBYL_CLAUDE_BIN` (default `claude`) and optional
+    /// `SIBYL_CLAUDE_MODEL`.
     pub fn from_env() -> Self {
         Self {
-            binary: std::env::var("DECKFORGE_CLAUDE_BIN").unwrap_or_else(|_| "claude".to_string()),
-            model: std::env::var("DECKFORGE_CLAUDE_MODEL").ok(),
+            binary: std::env::var("SIBYL_CLAUDE_BIN").unwrap_or_else(|_| "claude".to_string()),
+            model: std::env::var("SIBYL_CLAUDE_MODEL").ok(),
         }
     }
 

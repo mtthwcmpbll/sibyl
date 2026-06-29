@@ -1,17 +1,17 @@
-use deckforge::{DeckForge, GenerateIconStyles};
 use domain::FIXED_SEED;
 use providers::FakeProvider;
+use sibyl::{GenerateIconStyles, Sibyl};
 use storage::{FsStore, Store};
 
-fn forge(dir: &std::path::Path) -> DeckForge {
-    DeckForge::new(
+fn forge(dir: &std::path::Path) -> Sibyl {
+    Sibyl::new(
         Box::new(FakeProvider::new()),
         Box::new(FakeProvider::new()),
         Box::new(FsStore::new(dir)),
     )
 }
 
-async fn drive_to_sample(forge: &DeckForge, seed: u64) -> String {
+async fn drive_to_sample(forge: &Sibyl, seed: u64) -> String {
     let out = forge
         .generate_icon_styles(GenerateIconStyles {
             session_id: None,

@@ -3,12 +3,12 @@
 
 pub mod commands;
 
-use deckforge::DeckForge;
+use sibyl::Sibyl;
 use tauri::{App, Builder, Runtime};
 
-/// Assemble the Tauri app: manage the `DeckForge` core and register the IPC commands. Generic
+/// Assemble the Tauri app: manage the `Sibyl` core and register the IPC commands. Generic
 /// over the runtime so tests can build it on the `MockRuntime` and exercise real `invoke`s.
-pub fn build_app<R: Runtime>(builder: Builder<R>, forge: DeckForge) -> App<R> {
+pub fn build_app<R: Runtime>(builder: Builder<R>, forge: Sibyl) -> App<R> {
     builder
         .manage(forge)
         .invoke_handler(tauri::generate_handler![
@@ -22,11 +22,11 @@ pub fn build_app<R: Runtime>(builder: Builder<R>, forge: DeckForge) -> App<R> {
             commands::get_active_deck,
         ])
         .build(tauri::generate_context!())
-        .expect("failed to build the deckforge application")
+        .expect("failed to build the sibyl application")
 }
 
 /// Build the core from configuration and run the desktop application.
 pub fn run() {
-    let forge = app_core::build_deckforge();
+    let forge = app_core::build_sibyl();
     build_app(tauri::Builder::default(), forge).run(|_handle, _event| {});
 }

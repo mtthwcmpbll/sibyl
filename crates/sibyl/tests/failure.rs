@@ -3,11 +3,11 @@
 //! frontend package; this is the backend half.
 
 use async_trait::async_trait;
-use deckforge::{DeckForge, GenerateIconStyles};
 use providers::{
     FakeProvider, ImageBytes, ImageProvider, ImageRequest, ProviderError, ProviderId, TextProvider,
     TextRequest, TextResponse,
 };
+use sibyl::{GenerateIconStyles, Sibyl};
 use storage::FsStore;
 
 /// Text succeeds (echo via the fake), image generation always fails retryably.
@@ -36,7 +36,7 @@ impl ImageProvider for FlakyImage {
 #[tokio::test]
 async fn provider_failure_surfaces_as_retryable() {
     let dir = tempfile::tempdir().unwrap();
-    let forge = DeckForge::new(
+    let forge = Sibyl::new(
         Box::new(FlakyImage(FakeProvider::new())),
         Box::new(FlakyImage(FakeProvider::new())),
         Box::new(FsStore::new(dir.path())),

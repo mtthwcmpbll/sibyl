@@ -1,5 +1,5 @@
 [package]
-name = "deckforge-app"
+name = "sibyl-app"
 edition = "2021"
 version = "0.1.0"
 license = "MIT"
@@ -13,7 +13,7 @@ description = "Personal tarot deck — desktop shell"
 #   cargo tauri dev      # (from this directory, with the frontend running)
 
 [lib]
-name = "deckforge_app_lib"
+name = "sibyl_app_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
@@ -25,7 +25,7 @@ tauri = { version = "2", features = [] }
 # Core crates (path deps into the workspace). All command logic lives in app-core, which is
 # built and tested headlessly; this crate only wires it into Tauri.
 domain = { path = "../crates/domain" }
-deckforge = { path = "../crates/deckforge" }
+sibyl = { path = "../crates/sibyl" }
 app-core = { path = "../crates/app-core" }
 
 [dev-dependencies]

@@ -14,7 +14,7 @@ base64 = "0.22"
 domain = { workspace = true }
 providers = { workspace = true }
 storage = { workspace = true }
-deckforge = { path = "../deckforge" }
+sibyl = { path = "../sibyl" }
 
 [dev-dependencies]
 tokio.workspace = true

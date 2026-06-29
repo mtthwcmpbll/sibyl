@@ -1,7 +1,7 @@
 # Contract: Frontend ↔ Core IPC Commands
 
 The boundary between the TypeScript frontend and the Rust core. In the desktop app these are
-Tauri `#[tauri::command]`s invoked via the `DeckForgeClient` port; in Storybook/Playwright/web
+Tauri `#[tauri::command]`s invoked via the `SibylClient` port; in Storybook/Playwright/web
 the same port is backed by a mock/HTTP implementation. The command **names, inputs, and
 outputs are the stable contract** — both implementations MUST honor them.
 
@@ -90,5 +90,5 @@ Load the current active deck, if any (SC-003/004; used on app open and by future
 
 - Each command has a Rust contract test using the **FakeProvider + fixed seed**: asserts shape,
   error codes, and determinism (same seed → same `courtCard`, same option ordering).
-- The frontend `MockDeckForgeClient` implements this same contract so Storybook/Playwright run
+- The frontend `MockSibylClient` implements this same contract so Storybook/Playwright run
   without Tauri; a shared fixture set keeps mock and real implementations in agreement.

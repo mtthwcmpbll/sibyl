@@ -3,9 +3,9 @@ use domain::{Approval, Rect, SampleCard, SessionStatus};
 use providers::{ImageRequest, Size};
 use render::{compose, Layer};
 
-use crate::error::{DeckForgeError, Result};
+use crate::error::{Result, SibylError};
 use crate::prompt::compose_image_prompt;
-use crate::DeckForge;
+use crate::Sibyl;
 
 /// Canvas width for the canonical sample render; height follows the layout aspect.
 const CARD_W: u32 = 256;
@@ -14,7 +14,7 @@ fn px(rect: Rect, w: u32, h: u32) -> (i64, i64) {
     ((rect.x * w as f32) as i64, (rect.y * h as f32) as i64)
 }
 
-impl DeckForge {
+impl Sibyl {
     /// Compose the single court/face-card sample (FR-009/010): seeded court-card pick,
     /// just-in-time imagery, and canonical compositing of the front (suit icon + style-guide
     /// front + imagery + chrome) and back. Deterministic given the session seed.
@@ -23,10 +23,10 @@ impl DeckForge {
         let guide = session
             .style_guide
             .clone()
-            .ok_or(DeckForgeError::NoStyleGuide)?;
+            .ok_or(SibylError::NoStyleGuide)?;
         let chosen = session
             .chosen_option()
-            .ok_or(DeckForgeError::NoStyleSelected)?
+            .ok_or(SibylError::NoStyleSelected)?
             .clone();
 
         // Seeded court-card selection — reproducible, yet varied across sessions (Surprise).
@@ -64,7 +64,7 @@ impl DeckForge {
             .iter()
             .find(|i| i.suit == court.suit)
             .map(|i| i.image_key.clone())
-            .ok_or_else(|| DeckForgeError::InvalidState("chosen style missing suit".into()))?;
+            .ok_or_else(|| SibylError::InvalidState("chosen style missing suit".into()))?;
         let icon_bytes = self.store.get(&suit_icon_key)?;
         let chrome_bytes = self.store.get(&guide.border_chrome_key)?;
 

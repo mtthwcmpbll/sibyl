@@ -5,7 +5,7 @@ members = [
     "crates/providers",
     "crates/storage",
     "crates/render",
-    "crates/deckforge",
+    "crates/sibyl",
     "crates/app-core",
 ]
 # The Tauri desktop shell builds separately (needs system webkit2gtk libraries);

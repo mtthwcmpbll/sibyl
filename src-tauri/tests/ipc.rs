@@ -2,8 +2,8 @@
 //! (no window, no display). Proves the `#[tauri::command]` wrappers + invoke_handler wiring
 //! deserialize args, call the core, and serialize responses per contracts/ipc-commands.md.
 
-use deckforge::DeckForge;
 use providers::FakeProvider;
+use sibyl::Sibyl;
 use storage::FsStore;
 use tauri::ipc::{CallbackFn, InvokeBody};
 use tauri::test::{get_ipc_response, mock_builder, INVOKE_KEY};
@@ -12,8 +12,8 @@ use tauri::WebviewWindowBuilder;
 
 type MockWebview = tauri::WebviewWindow<tauri::test::MockRuntime>;
 
-fn forge(dir: &std::path::Path) -> DeckForge {
-    DeckForge::new(
+fn forge(dir: &std::path::Path) -> Sibyl {
+    Sibyl::new(
         Box::new(FakeProvider::new()),
         Box::new(FakeProvider::new()),
         Box::new(FsStore::new(dir)),
@@ -45,7 +45,7 @@ fn invoke(
 #[test]
 fn full_journey_over_real_ipc() {
     let dir = tempfile::tempdir().unwrap();
-    let app = deckforge_app_lib::build_app(mock_builder(), forge(dir.path()));
+    let app = sibyl_app_lib::build_app(mock_builder(), forge(dir.path()));
     let webview = WebviewWindowBuilder::new(&app, "main", Default::default())
         .build()
         .unwrap();
@@ -124,7 +124,7 @@ fn full_journey_over_real_ipc() {
 #[test]
 fn errors_map_to_contract_codes_over_ipc() {
     let dir = tempfile::tempdir().unwrap();
-    let app = deckforge_app_lib::build_app(mock_builder(), forge(dir.path()));
+    let app = sibyl_app_lib::build_app(mock_builder(), forge(dir.path()));
     let webview = WebviewWindowBuilder::new(&app, "main", Default::default())
         .build()
         .unwrap();

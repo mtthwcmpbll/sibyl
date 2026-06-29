@@ -13,7 +13,7 @@ Principles V, VII). Real generation is opt-in via configuration/env.
 
 ## Layout recap
 
-- Core crates: `crates/{domain,providers,render,storage,deckforge}`
+- Core crates: `crates/{domain,providers,render,storage,sibyl}`
 - Desktop shell: `src-tauri/`
 - Frontend: `frontend/` (React + Vite + TS)
 
@@ -52,7 +52,7 @@ pnpm --dir frontend test          # Vitest
 pnpm --dir frontend storybook     # interactive
 pnpm --dir frontend test-storybook  # CI run of stories
 
-# UI flows against the MockDeckForgeClient (no Tauri/network)
+# UI flows against the MockSibylClient (no Tauri/network)
 pnpm --dir frontend playwright test
 ```
 
@@ -60,7 +60,7 @@ pnpm --dir frontend playwright test
 
 - **Determinism (SC-007)**: same seed → same chosen court card and same option ordering;
   rendered sample front/back are byte-stable offline (deck-bundle contract test).
-- **Contract parity**: the Rust commands and the frontend `MockDeckForgeClient` satisfy the
+- **Contract parity**: the Rust commands and the frontend `MockSibylClient` satisfy the
   same `contracts/ipc-commands.md` shapes/error codes.
 - **Approval gating (FR-018/SC-005)**: only approval sets the active deck; reject/abandon does
   not.
@@ -70,8 +70,8 @@ pnpm --dir frontend playwright test
 ## Opt into real generation (optional)
 
 ```bash
-export DECKFORGE_PROVIDER=<provider-id>     # selects the HTTP adapter
-export DECKFORGE_API_KEY=...                # from env only; never logged/committed
+export SIBYL_PROVIDER=<provider-id>     # selects the HTTP adapter
+export SIBYL_API_KEY=...                # from env only; never logged/committed
 pnpm --dir frontend tauri dev
 ```
 

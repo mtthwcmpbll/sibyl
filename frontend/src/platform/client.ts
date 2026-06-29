@@ -19,7 +19,7 @@ export interface GenerateIconStylesInput {
  * frontend-portability). The desktop app implements this via Tauri `invoke`; tests and the
  * plain-web build implement it with the in-memory mock. No component touches Tauri directly.
  */
-export interface DeckForgeClient {
+export interface SibylClient {
   generateIconStyles(input: GenerateIconStylesInput): Promise<IconStylesResult>;
   selectIconStyle(sessionId: string, styleOptionId: string): Promise<void>;
   generateStyleGuide(sessionId: string): Promise<CardStyleGuide>;

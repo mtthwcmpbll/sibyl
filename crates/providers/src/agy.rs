@@ -25,12 +25,12 @@ pub struct AgyCliProvider {
 }
 
 impl AgyCliProvider {
-    /// Construct from environment: `DECKFORGE_AGY_BIN` (default `agy`) and
-    /// `DECKFORGE_AGY_TIMEOUT` (default `5m`).
+    /// Construct from environment: `SIBYL_AGY_BIN` (default `agy`) and
+    /// `SIBYL_AGY_TIMEOUT` (default `5m`).
     pub fn from_env() -> Self {
         Self {
-            binary: std::env::var("DECKFORGE_AGY_BIN").unwrap_or_else(|_| "agy".to_string()),
-            timeout: std::env::var("DECKFORGE_AGY_TIMEOUT").unwrap_or_else(|_| "5m".to_string()),
+            binary: std::env::var("SIBYL_AGY_BIN").unwrap_or_else(|_| "agy".to_string()),
+            timeout: std::env::var("SIBYL_AGY_TIMEOUT").unwrap_or_else(|_| "5m".to_string()),
         }
     }
 

@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Deckforge",
+  "productName": "Sibyl",
   "version": "0.1.0",
-  "identifier": "com.123elm.deckforge",
+  "identifier": "com.123elm.sibyl",
   "build": {
     "frontendDist": "../frontend/dist",
     "devUrl": "http://localhost:5173",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "Deckforge — your personal tarot deck",
+        "title": "Sibyl — your personal tarot deck",
         "width": 1100,
         "height": 800,
         "minWidth": 800,

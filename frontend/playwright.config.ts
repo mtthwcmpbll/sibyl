@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// E2E runs against the plain web build, which uses the deterministic MockDeckForgeClient
+// E2E runs against the plain web build, which uses the deterministic MockSibylClient
 // (no Tauri, no network) — exactly the frontend-portability the constitution requires.
 export default defineConfig({
   testDir: "./tests/e2e",

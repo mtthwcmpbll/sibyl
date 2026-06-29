@@ -26,7 +26,7 @@ fixtures, even though the wizard runs them in sequence.
 ## Path Conventions
 
 Cargo workspace + Tauri shell + React/Vite frontend (see plan.md → Project Structure):
-`crates/{domain,providers,render,storage,deckforge}`, `src-tauri/`, `frontend/`.
+`crates/{domain,providers,render,storage,sibyl}`, `src-tauri/`, `frontend/`.
 
 ---
 
@@ -34,7 +34,7 @@ Cargo workspace + Tauri shell + React/Vite frontend (see plan.md → Project Str
 
 **Purpose**: Initialize the workspace, shell, frontend, and the test toolchain.
 
-- [X] T001 Create Cargo workspace with member crate skeletons (domain, providers, render, storage, deckforge) in `Cargo.toml` and `crates/*/Cargo.toml` + `crates/*/src/lib.rs`
+- [X] T001 Create Cargo workspace with member crate skeletons (domain, providers, render, storage, sibyl) in `Cargo.toml` and `crates/*/Cargo.toml` + `crates/*/src/lib.rs`
 - [X] T002 [P] Initialize Tauri 2 desktop shell in `src-tauri/` (`src-tauri/Cargo.toml`, `src-tauri/tauri.conf.json`, `src-tauri/src/main.rs`) depending on the workspace crates
 - [X] T003 [P] Initialize React 18 + Vite 5 + TypeScript (strict) app in `frontend/` (`frontend/package.json`, `frontend/tsconfig.json`, `frontend/vite.config.ts`, `frontend/src/App.tsx`)
 - [X] T004 [P] Configure Rust formatting/linting in `rustfmt.toml` and a clippy lint script in `scripts/lint.sh`
@@ -70,14 +70,14 @@ primitives, IPC plumbing, frontend client port) that every story depends on.
 - [X] T022 Implement bundle (de)serialization + `active.json` handling in `crates/storage/src/bundle.rs`
 - [X] T023 [P] Unit test: deterministic layer compositing (write first) in `crates/render/tests/compositor.rs`
 - [X] T024 Implement compositing primitives (Pixmap layering, decode/encode, normalized-slot placement) in `crates/render/src/compositor.rs` and `crates/render/src/layout.rs`
-- [X] T025 Implement `deckforge` orchestration skeleton + error type + dependency injection of providers/store/RNG in `crates/deckforge/src/lib.rs` and `crates/deckforge/src/error.rs`
+- [X] T025 Implement `sibyl` orchestration skeleton + error type + dependency injection of providers/store/RNG in `crates/sibyl/src/lib.rs` and `crates/sibyl/src/error.rs`
 - [X] T026 Implement Tauri command plumbing: registry, provider+store construction from config/env, app-data path resolution in `src-tauri/src/main.rs`, `src-tauri/src/commands.rs`, `src-tauri/src/config.rs`
 - [X] T027 [P] Contract test for `get_asset` (resolves a stored key; `unknown_key` error) (write first) in `src-tauri/tests/get_asset.rs`
 - [X] T028 Implement `get_asset` command in `src-tauri/src/commands.rs`
 - [X] T029 [P] Vitest spec: wizard state-machine transitions (write first) in `frontend/tests/wizard.test.ts`
-- [X] T030 Implement `DeckForgeClient` port interface + shared TS types mirroring `contracts/ipc-commands.md` in `frontend/src/platform/client.ts`
-- [X] T031 Implement `MockDeckForgeClient` (fixture-backed, honors the IPC contract) in `frontend/src/platform/mockClient.ts`
-- [X] T032 Implement `TauriDeckForgeClient` (via `@tauri-apps/api` invoke) in `frontend/src/platform/tauriClient.ts`
+- [X] T030 Implement `SibylClient` port interface + shared TS types mirroring `contracts/ipc-commands.md` in `frontend/src/platform/client.ts`
+- [X] T031 Implement `MockSibylClient` (fixture-backed, honors the IPC contract) in `frontend/src/platform/mockClient.ts`
+- [X] T032 Implement `TauriSibylClient` (via `@tauri-apps/api` invoke) in `frontend/src/platform/tauriClient.ts`
 - [X] T033 Implement wizard state machine + app shell/step router in `frontend/src/state/wizard.ts` and `frontend/src/App.tsx`
 
 **Checkpoint**: Seams exist and are unit-tested on the fake provider; the frontend can drive a no-op wizard against the mock client. User stories can now begin.
@@ -98,21 +98,21 @@ inputs.
 > **Write these tests FIRST, ensure they FAIL before implementation**
 
 - [X] T034 [P] [US1] Rust contract test: `generate_icon_styles` returns ≥3 options, all suits present, deterministic by seed; `select_icon_style` records choice — in `src-tauri/tests/us1_icons.rs`
-- [X] T035 [P] [US1] Rust unit test: `deckforge` generate-icons use-case (per-suit prompt build, fake provider, ≥3 options) in `crates/deckforge/tests/icons.rs`
+- [X] T035 [P] [US1] Rust unit test: `sibyl` generate-icons use-case (per-suit prompt build, fake provider, ≥3 options) in `crates/sibyl/tests/icons.rs`
 - [X] T036 [P] [US1] Storybook stories: `StyleOption` and `StyleChoice` grid (loading / options / regenerating states) in `frontend/src/components/StyleOption.stories.tsx`
 - [X] T037 [P] [US1] Playwright: inputs → generate → ≥3 options → regenerate (inputs preserved) → select → proceed (mock backend) in `frontend/tests/us1-style-choice.spec.ts`
-- [X] T069 [P] [US1] Rust unit test: `compose_image_prompt` makes iconography rules authoritative over deck-style text (write first) in `crates/deckforge/tests/prompt.rs` (FR-019)
+- [X] T069 [P] [US1] Rust unit test: `compose_image_prompt` makes iconography rules authoritative over deck-style text (write first) in `crates/sibyl/tests/prompt.rs` (FR-019)
 - [X] T071 [P] [US1] Failure-path tests: a provider error surfaces a retryable error and preserves entered inputs/selection — Rust contract in `src-tauri/tests/failure_retry.rs` and Playwright in `frontend/tests/failure-retry.spec.ts` (FR-017, SC-006; pattern reused by US2/US3)
 
 ### Implementation for User Story 1
 
-- [X] T070 [US1] Implement `compose_image_prompt(rules, style)` via `TextProvider` (rules authoritative; output reused by icon, style-guide, and sample image generation) in `crates/deckforge/src/prompt.rs` (FR-019)
-- [X] T038 [US1] Implement `generate_icon_styles` use-case (per-suit prompts via `compose_image_prompt` (T070), provider calls, store icons, ≥3 seeded options) in `crates/deckforge/src/icons.rs`
-- [X] T039 [US1] Implement `select_icon_style` use-case (record chosen option on session) in `crates/deckforge/src/icons.rs`
+- [X] T070 [US1] Implement `compose_image_prompt(rules, style)` via `TextProvider` (rules authoritative; output reused by icon, style-guide, and sample image generation) in `crates/sibyl/src/prompt.rs` (FR-019)
+- [X] T038 [US1] Implement `generate_icon_styles` use-case (per-suit prompts via `compose_image_prompt` (T070), provider calls, store icons, ≥3 seeded options) in `crates/sibyl/src/icons.rs`
+- [X] T039 [US1] Implement `select_icon_style` use-case (record chosen option on session) in `crates/sibyl/src/icons.rs`
 - [X] T040 [US1] Wire `generate_icon_styles` + `select_icon_style` Tauri commands (with progress events + retryable errors) in `src-tauri/src/commands.rs`
 - [X] T041 [P] [US1] `InputsView` (iconography rules + deck-style text, optional) in `frontend/src/views/InputsView.tsx`
 - [X] T042 [P] [US1] `StyleChoiceView` (option grid, select, regenerate, progress, retry) in `frontend/src/views/StyleChoiceView.tsx`
-- [X] T043 [US1] Wire US1 views to `DeckForgeClient` + wizard transitions (progress + retry on `provider_failed`) in `frontend/src/state/wizard.ts`
+- [X] T043 [US1] Wire US1 views to `SibylClient` + wizard transitions (progress + retry on `provider_failed`) in `frontend/src/state/wizard.ts`
 
 **Checkpoint**: US1 is independently demoable — enter inputs, get options, pick one.
 
@@ -132,14 +132,14 @@ none chosen.
 > **Write these tests FIRST, ensure they FAIL before implementation**
 
 - [X] T044 [P] [US2] Rust contract test: `generate_style_guide` derives prompt from chosen style, returns border/chrome + back + front layout + ≥1 shader area + flourishes; `no_style_selected` error — in `src-tauri/tests/us2_style_guide.rs`
-- [X] T045 [P] [US2] Rust unit test: `deckforge` style-guide use-case (prompt auto-derived, fake provider, versioned guide) in `crates/deckforge/tests/style_guide.rs`
+- [X] T045 [P] [US2] Rust unit test: `sibyl` style-guide use-case (prompt auto-derived, fake provider, versioned guide) in `crates/sibyl/tests/style_guide.rs`
 - [X] T046 [P] [US2] Storybook stories: `StyleGuidePreview` (loading / complete) in `frontend/src/components/StyleGuidePreview.stories.tsx`
 - [X] T047 [P] [US2] Playwright: selected style → generate guide → preview shows required elements (mock backend) in `frontend/tests/us2-style-guide.spec.ts`
 
 ### Implementation for User Story 2
 
-- [X] T048 [US2] Implement style-guide prompt derivation from the chosen option in `crates/deckforge/src/style_guide.rs`
-- [X] T049 [US2] Implement `generate_style_guide` use-case: generate/store assets, assemble front layout + shader areas + flourishes, version the guide — in `crates/deckforge/src/style_guide.rs` and `crates/render/src/layout.rs`
+- [X] T048 [US2] Implement style-guide prompt derivation from the chosen option in `crates/sibyl/src/style_guide.rs`
+- [X] T049 [US2] Implement `generate_style_guide` use-case: generate/store assets, assemble front layout + shader areas + flourishes, version the guide — in `crates/sibyl/src/style_guide.rs` and `crates/render/src/layout.rs`
 - [X] T050 [US2] Wire `generate_style_guide` Tauri command (progress + retryable errors) in `src-tauri/src/commands.rs`
 - [X] T051 [US2] `StyleGuideView` (preview + proceed) wired to client in `frontend/src/views/StyleGuideView.tsx`
 
@@ -161,16 +161,16 @@ single active deck; reject leaves no active deck and preserves inputs.
 > **Write these tests FIRST, ensure they FAIL before implementation**
 
 - [X] T052 [P] [US3] Rust contract tests: `compose_sample_card` (always a court card, seeded, returns front/back keys), `approve_deck` (sets exactly one active), `reject_and_restart` (preserves inputs, no active), `get_active_deck` — in `src-tauri/tests/us3_commands.rs`
-- [X] T053 [P] [US3] Rust unit test: compose use-case builds court-card front (icon + front + imagery + chrome) and back; byte-stable offline (reproducibility) in `crates/deckforge/tests/sample.rs`
-- [X] T054 [P] [US3] Rust unit test: approve promotes draft → bundle + flips active pointer; reject leaves existing active unchanged in `crates/deckforge/tests/approve.rs`
+- [X] T053 [P] [US3] Rust unit test: compose use-case builds court-card front (icon + front + imagery + chrome) and back; byte-stable offline (reproducibility) in `crates/sibyl/tests/sample.rs`
+- [X] T054 [P] [US3] Rust unit test: approve promotes draft → bundle + flips active pointer; reject leaves existing active unchanged in `crates/sibyl/tests/approve.rs`
 - [X] T055 [P] [US3] Storybook stories: `CardFlip` (face-down → revealed) in `frontend/src/components/CardFlip.stories.tsx`
 - [X] T056 [P] [US3] Playwright: compose → face-down → flip → approve → active deck persists on reload; reject → back to inputs with no active deck (mock backend) in `frontend/tests/us3-reveal-approve.spec.ts`
 
 ### Implementation for User Story 3
 
-- [X] T057 [US3] Implement `compose_sample_card` use-case: seeded court-card pick, JIT imagery via provider, canonical compositing of front + back, store sample — in `crates/deckforge/src/sample.rs` and `crates/render/src/card.rs`
-- [X] T058 [US3] Implement `approve_deck` (promote draft → bundle, set active), `reject_and_restart` (discard draft artifacts, keep inputs), `get_active_deck` — in `crates/deckforge/src/approve.rs`
-- [X] T072 [US3] Assemble `GenerationProvenance` (rules, style, seed, chosen option, court card, provider/model id, composed prompts sent) into the draft and persist it in the approved bundle; unit test asserts it is sufficient to regenerate and that composed prompts are recorded — in `crates/deckforge/src/approve.rs` and `crates/deckforge/tests/provenance.rs` (FR-014/FR-019; Principles V/VI)
+- [X] T057 [US3] Implement `compose_sample_card` use-case: seeded court-card pick, JIT imagery via provider, canonical compositing of front + back, store sample — in `crates/sibyl/src/sample.rs` and `crates/render/src/card.rs`
+- [X] T058 [US3] Implement `approve_deck` (promote draft → bundle, set active), `reject_and_restart` (discard draft artifacts, keep inputs), `get_active_deck` — in `crates/sibyl/src/approve.rs`
+- [X] T072 [US3] Assemble `GenerationProvenance` (rules, style, seed, chosen option, court card, provider/model id, composed prompts sent) into the draft and persist it in the approved bundle; unit test asserts it is sufficient to regenerate and that composed prompts are recorded — in `crates/sibyl/src/approve.rs` and `crates/sibyl/tests/provenance.rs` (FR-014/FR-019; Principles V/VI)
 - [X] T059 [US3] Wire `compose_sample_card` / `approve_deck` / `reject_and_restart` / `get_active_deck` Tauri commands in `src-tauri/src/commands.rs`
 - [X] T060 [P] [US3] `CardFlip` component (face-down → flip reveal animation, ~60fps) in `frontend/src/components/CardFlip.tsx`
 - [X] T061 [US3] `RevealView` (face-down card, flip, approve/reject) wired to client in `frontend/src/views/RevealView.tsx`
@@ -228,7 +228,7 @@ single active deck; reject leaves no active deck and preserves inputs.
 ```text
 # Launch US1 test-first tasks together (all must fail before implementation):
 T034  Rust contract test       (src-tauri/tests/us1_icons.rs)
-T035  deckforge unit test      (crates/deckforge/tests/icons.rs)
+T035  sibyl unit test      (crates/sibyl/tests/icons.rs)
 T036  Storybook stories        (frontend/src/components/StyleOption.stories.tsx)
 T037  Playwright flow          (frontend/tests/us1-style-choice.spec.ts)
 ```

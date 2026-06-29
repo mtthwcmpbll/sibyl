@@ -15,7 +15,7 @@ use providers::{ImageProvider, TextProvider};
 use storage::Store;
 
 pub use approve::RestartInputs;
-pub use error::{DeckForgeError, Result};
+pub use error::{Result, SibylError};
 pub use icons::{GenerateIconStyles, IconStylesResult};
 pub use prompt::compose_image_prompt;
 
@@ -26,13 +26,13 @@ pub const ICONOGRAPHY_RULES: &str = include_str!("../resources/iconography_rules
 
 /// Orchestrates deck creation against injected providers and storage. Construct it in the
 /// host (e.g. the Tauri shell) from configuration; the core depends only on the traits.
-pub struct DeckForge {
+pub struct Sibyl {
     text: Box<dyn TextProvider>,
     image: Box<dyn ImageProvider>,
     store: Box<dyn Store>,
 }
 
-impl DeckForge {
+impl Sibyl {
     pub fn new(
         text: Box<dyn TextProvider>,
         image: Box<dyn ImageProvider>,
@@ -46,8 +46,8 @@ impl DeckForge {
     }
 
     pub(crate) fn save_session(&self, session: &DeckCreationSession) -> Result<()> {
-        let bytes = serde_json::to_vec_pretty(session)
-            .map_err(|e| DeckForgeError::Storage(e.to_string()))?;
+        let bytes =
+            serde_json::to_vec_pretty(session).map_err(|e| SibylError::Storage(e.to_string()))?;
         self.store.put(&Self::session_key(&session.id), &bytes)?;
         Ok(())
     }
@@ -55,10 +55,10 @@ impl DeckForge {
     pub fn load_session(&self, id: &str) -> Result<DeckCreationSession> {
         let key = Self::session_key(id);
         if !self.store.exists(&key) {
-            return Err(DeckForgeError::UnknownSession(id.to_string()));
+            return Err(SibylError::UnknownSession(id.to_string()));
         }
         let bytes = self.store.get(&key)?;
-        serde_json::from_slice(&bytes).map_err(|e| DeckForgeError::Storage(e.to_string()))
+        serde_json::from_slice(&bytes).map_err(|e| SibylError::Storage(e.to_string()))
     }
 
     /// Resolve a storage key to raw bytes (used by the IPC layer's `get_asset`).

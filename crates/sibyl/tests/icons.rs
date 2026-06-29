@@ -1,10 +1,10 @@
-use deckforge::{DeckForge, GenerateIconStyles};
 use domain::{Suit, FIXED_SEED};
 use providers::FakeProvider;
+use sibyl::{GenerateIconStyles, Sibyl};
 use storage::{FsStore, Store};
 
-fn forge(dir: &std::path::Path) -> DeckForge {
-    DeckForge::new(
+fn forge(dir: &std::path::Path) -> Sibyl {
+    Sibyl::new(
         Box::new(FakeProvider::new()),
         Box::new(FakeProvider::new()),
         Box::new(FsStore::new(dir)),

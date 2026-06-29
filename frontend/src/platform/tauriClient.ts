@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 
-import type { DeckForgeClient, GenerateIconStylesInput } from "./client";
+import type { SibylClient, GenerateIconStylesInput } from "./client";
 import type {
   AssetResponse,
   CardStyleGuide,
@@ -14,7 +14,7 @@ import type {
  * Desktop implementation of the client: every method is a single Tauri `invoke`. This is the
  * ONLY module that imports Tauri APIs, keeping every component portable (Principle II).
  */
-export class TauriDeckForgeClient implements DeckForgeClient {
+export class TauriSibylClient implements SibylClient {
   generateIconStyles(input: GenerateIconStylesInput): Promise<IconStylesResult> {
     return invoke("generate_icon_styles", {
       sessionId: input.sessionId ?? null,

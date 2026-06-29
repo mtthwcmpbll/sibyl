@@ -1,4 +1,4 @@
-# Deckforge — a personal tarot deck
+# Sibyl — a personal tarot deck
 
 An app that uses an LLM (and image generation) to design and render a tarot deck made for
 one person. This repo implements the first feature, **Deck Creation** (the Preparation phase):
@@ -19,13 +19,13 @@ crates/
   providers/  TextProvider/ImageProvider traits + deterministic FakeProvider
   storage/    Store trait + filesystem backend + deck-bundle/active-pointer
   render/     deterministic CPU compositing (the canonical card image)
-  deckforge/  orchestration: compose_image_prompt, generate_icon_styles, style guide,
+  sibyl/  orchestration: compose_image_prompt, generate_icon_styles, style guide,
               sample, approve/reject/get_active_deck
   app-core/   Tauri-free command layer: arg + error-code mapping, asset encoding,
               provider/storage construction — tested headlessly
 src-tauri/    thinnest Tauri 2 shell: 8 one-line command wrappers over app-core + the
               Builder wiring (this crate alone needs system webkit to compile)
-frontend/     React + Vite + TS; DeckForgeClient port (Tauri + mock impls), wizard,
+frontend/     React + Vite + TS; SibylClient port (Tauri + mock impls), wizard,
               components, views, Storybook, Playwright
 ```
 
@@ -75,10 +75,10 @@ By default it uses the offline `FakeProvider`. Real generation is opt-in via env
 Drives the locally-installed, logged-in `claude` CLI — no API key needed:
 
 ```bash
-export DECKFORGE_PROVIDER=claude
+export SIBYL_PROVIDER=claude
 # optional overrides:
-export DECKFORGE_CLAUDE_BIN=claude          # path to the claude binary
-export DECKFORGE_CLAUDE_MODEL=...           # specific model
+export SIBYL_CLAUDE_BIN=claude          # path to the claude binary
+export SIBYL_CLAUDE_MODEL=...           # specific model
 cargo tauri dev
 ```
 
@@ -93,10 +93,10 @@ behind the same `ImageProvider` trait.
 Drives the locally-installed, logged-in `agy` CLI — same vector-art (SVG→PNG) approach:
 
 ```bash
-export DECKFORGE_PROVIDER=agy               # or "antigravity"
+export SIBYL_PROVIDER=agy               # or "antigravity"
 # optional overrides:
-export DECKFORGE_AGY_BIN=agy                # path to the agy binary
-export DECKFORGE_AGY_TIMEOUT=5m             # --print-timeout (Go duration)
+export SIBYL_AGY_BIN=agy                # path to the agy binary
+export SIBYL_AGY_TIMEOUT=5m             # --print-timeout (Go duration)
 cargo tauri dev
 ```
 
