@@ -45,6 +45,7 @@ impl From<String> for Personal {
 
 /// One suit's generated icon, referenced by storage key (never embedded).
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
 pub struct SuitIcon {
     pub suit: Suit,
     pub image_key: String,
@@ -52,6 +53,7 @@ pub struct SuitIcon {
 
 /// One cohesive candidate covering every suit; the owner selects exactly one.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
 pub struct StyleOption {
     pub id: String,
     pub label: String,
@@ -82,6 +84,7 @@ pub enum SessionStatus {
 
 /// The in-progress deck-creation wizard state (draft). Never "active".
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DeckCreationSession {
     pub id: String,
     pub seed: u64,
@@ -131,6 +134,7 @@ impl DeckCreationSession {
 /// Recorded inputs + identifiers sufficient to explain and regenerate an artifact
 /// (FR-014; Principles V/VI). Personal fields are redacted in Debug output.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct GenerationProvenance {
     pub seed: u64,
     pub iconography_rules: Personal,
@@ -160,6 +164,7 @@ impl Rect {
 
 /// Front-face layout: where the suit icon, card imagery, and title sit (normalized).
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct FrontLayout {
     pub aspect: f32,
     pub suit_icon: Rect,
@@ -178,6 +183,7 @@ pub struct ShaderArea {
 
 /// A decorative flourish placement.
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct FlourishRef {
     pub asset_key: String,
     pub rect: Rect,
@@ -187,6 +193,7 @@ pub struct FlourishRef {
 /// The card-system definition derived from the chosen style (FR-007/008). Versioned so prior
 /// cards stay attributable to the identity that produced them (Principle IV).
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CardStyleGuide {
     pub id: String,
     pub version: u32,
@@ -210,6 +217,7 @@ pub enum Approval {
 
 /// The single composed court/face card preview (FR-009/010; always a court card).
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct SampleCard {
     pub court_card: CourtCardId,
     pub card_imagery_key: String,
@@ -220,6 +228,7 @@ pub struct SampleCard {
 
 /// The durable, approved deck identity — the prepared-state bundle future features consume.
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Deck {
     pub id: String,
     pub active: bool,

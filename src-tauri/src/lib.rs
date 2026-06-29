@@ -1,13 +1,15 @@
 //! Desktop shell for the personal tarot deck. The thinnest possible Tauri 2 layer: it builds
 //! the core via `app_core` and registers the command wrappers. All logic is in `app-core`.
 
-mod commands;
+pub mod commands;
 
-/// Build the core and run the Tauri application.
-pub fn run() {
-    let forge = app_core::build_deckforge();
+use deckforge::DeckForge;
+use tauri::{App, Builder, Runtime};
 
-    tauri::Builder::default()
+/// Assemble the Tauri app: manage the `DeckForge` core and register the IPC commands. Generic
+/// over the runtime so tests can build it on the `MockRuntime` and exercise real `invoke`s.
+pub fn build_app<R: Runtime>(builder: Builder<R>, forge: DeckForge) -> App<R> {
+    builder
         .manage(forge)
         .invoke_handler(tauri::generate_handler![
             commands::generate_icon_styles,
@@ -19,6 +21,12 @@ pub fn run() {
             commands::reject_and_restart,
             commands::get_active_deck,
         ])
-        .run(tauri::generate_context!())
-        .expect("error while running the deckforge application");
+        .build(tauri::generate_context!())
+        .expect("failed to build the deckforge application")
+}
+
+/// Build the core from configuration and run the desktop application.
+pub fn run() {
+    let forge = app_core::build_deckforge();
+    build_app(tauri::Builder::default(), forge).run(|_handle, _event| {});
 }

@@ -1,0 +1,16 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Grant the deck-creation IPC commands to the main window.",
+  "windows": ["main"],
+  "permissions": [
+    "allow-generate-icon-styles",
+    "allow-select-icon-style",
+    "allow-generate-style-guide",
+    "allow-compose-sample-card",
+    "allow-get-asset",
+    "allow-approve-deck",
+    "allow-reject-and-restart",
+    "allow-get-active-deck"
+  ]
+}

@@ -15,8 +15,14 @@ pub async fn generate_icon_styles(
     deck_style_text: String,
     count: Option<usize>,
 ) -> CmdResult<IconStylesResult> {
-    app_core::generate_icon_styles(&state, session_id, iconography_rules, deck_style_text, count)
-        .await
+    app_core::generate_icon_styles(
+        &state,
+        session_id,
+        iconography_rules,
+        deck_style_text,
+        count,
+    )
+    .await
 }
 
 #[tauri::command]
@@ -45,12 +51,18 @@ pub async fn compose_sample_card(
 }
 
 #[tauri::command]
-pub async fn get_asset(state: tauri::State<'_, DeckForge>, key: String) -> CmdResult<AssetResponse> {
+pub async fn get_asset(
+    state: tauri::State<'_, DeckForge>,
+    key: String,
+) -> CmdResult<AssetResponse> {
     app_core::get_asset(&state, &key)
 }
 
 #[tauri::command]
-pub async fn approve_deck(state: tauri::State<'_, DeckForge>, session_id: String) -> CmdResult<Deck> {
+pub async fn approve_deck(
+    state: tauri::State<'_, DeckForge>,
+    session_id: String,
+) -> CmdResult<Deck> {
     app_core::approve_deck(&state, &session_id)
 }
 
@@ -63,8 +75,6 @@ pub async fn reject_and_restart(
 }
 
 #[tauri::command]
-pub async fn get_active_deck(
-    state: tauri::State<'_, DeckForge>,
-) -> CmdResult<Option<Deck>> {
+pub async fn get_active_deck(state: tauri::State<'_, DeckForge>) -> CmdResult<Option<Deck>> {
     app_core::get_active_deck(&state)
 }

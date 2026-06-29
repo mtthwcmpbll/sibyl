@@ -1,7 +1,11 @@
 # Rust
 /target/
+src-tauri/target/
 **/*.rs.bk
 *.pdb
+
+# Tauri build-generated (schemas, etc.)
+src-tauri/gen/
 
 # Node / frontend
 node_modules/
