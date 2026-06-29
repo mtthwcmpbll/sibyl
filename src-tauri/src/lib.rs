@@ -1,12 +1,11 @@
-//! Desktop shell for the personal tarot deck. Thin Tauri 2 layer over the `deckforge` core:
-//! it constructs the provider/storage seams from config and exposes the IPC commands.
+//! Desktop shell for the personal tarot deck. The thinnest possible Tauri 2 layer: it builds
+//! the core via `app_core` and registers the command wrappers. All logic is in `app-core`.
 
 mod commands;
-mod config;
 
 /// Build the core and run the Tauri application.
 pub fn run() {
-    let forge = config::build_deckforge();
+    let forge = app_core::build_deckforge();
 
     tauri::Builder::default()
         .manage(forge)

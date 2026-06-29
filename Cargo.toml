@@ -6,6 +6,7 @@ members = [
     "crates/storage",
     "crates/render",
     "crates/deckforge",
+    "crates/app-core",
 ]
 # The Tauri desktop shell builds separately (needs system webkit2gtk libraries);
 # excluded so the headless core test suite stays toolchain-light.

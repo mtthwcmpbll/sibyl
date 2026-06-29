@@ -21,12 +21,9 @@ tauri-build = { version = "2", features = [] }
 
 [dependencies]
 tauri = { version = "2", features = [] }
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
-base64 = "0.22"
 
-# Core crates (path deps into the workspace).
+# Core crates (path deps into the workspace). All command logic lives in app-core, which is
+# built and tested headlessly; this crate only wires it into Tauri.
 domain = { path = "../crates/domain" }
-providers = { path = "../crates/providers" }
-storage = { path = "../crates/storage" }
 deckforge = { path = "../crates/deckforge" }
+app-core = { path = "../crates/app-core" }

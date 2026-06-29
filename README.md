@@ -21,7 +21,10 @@ crates/
   render/     deterministic CPU compositing (the canonical card image)
   deckforge/  orchestration: compose_image_prompt, generate_icon_styles, style guide,
               sample, approve/reject/get_active_deck
-src-tauri/    thin Tauri 2 shell: IPC commands over deckforge (build needs system webkit)
+  app-core/   Tauri-free command layer: arg + error-code mapping, asset encoding,
+              provider/storage construction — tested headlessly
+src-tauri/    thinnest Tauri 2 shell: 8 one-line command wrappers over app-core + the
+              Builder wiring (this crate alone needs system webkit to compile)
 frontend/     React + Vite + TS; DeckForgeClient port (Tauri + mock impls), wizard,
               components, views, Storybook, Playwright
 ```
@@ -39,7 +42,7 @@ Key properties (from the constitution):
 ## Run the tests (no credentials needed)
 
 ```bash
-# Rust core (41 tests)
+# Rust core + command layer (44 tests)
 cargo test
 
 # Frontend unit + UI-flow tests (Vitest)
