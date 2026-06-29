@@ -3,11 +3,11 @@ use domain::{DeckCreationSession, Personal, SessionStatus, StyleOption, Suit, Su
 use providers::{ImageRequest, Size};
 
 use crate::error::{Result, SibylError};
-use crate::prompt::compose_image_prompt;
-use crate::Sibyl;
+use crate::prompt::build_image_prompt;
+use crate::{rules, Sibyl};
 
 /// Input for generating (or regenerating) a round of suit-icon style options (FR-003/006).
-/// The iconography rules are NOT here — they are an app resource ([`crate::ICONOGRAPHY_RULES`]);
+/// The iconography rules are NOT here — they are an app resource ([`crate::rules::SUIT_ICONS`]);
 /// the owner supplies only their deck style.
 #[derive(Debug, Clone, Default)]
 pub struct GenerateIconStyles {
@@ -46,13 +46,12 @@ impl Sibyl {
                 DeckCreationSession::new(
                     id,
                     seed,
-                    crate::ICONOGRAPHY_RULES,
+                    rules::SUIT_ICONS,
                     Personal::from(input.style.as_str()),
                 )
             }
         };
 
-        let rules = session.iconography_rules.as_str().to_string();
         let style = session.deck_style_text.as_str().to_string();
         let round = session.round;
         let round_seed = sub_seed(session.seed, &format!("round-{round}"));
@@ -63,21 +62,18 @@ impl Sibyl {
             let option_id = format!("r{round}-opt{o}");
             let option_seed = sub_seed(round_seed, &option_id);
 
-            let base_prompt = compose_image_prompt(
-                &*self.text,
-                &rules,
-                &style,
-                &format!("suit-set option {o}"),
-                option_seed,
-            )
-            .await?;
-
             let mut suit_icons = Vec::with_capacity(Suit::STANDARD.len());
             for suit in Suit::STANDARD {
+                // Prepend the suit-icon rules to this artifact's image prompt (FR-019).
+                let prompt = build_image_prompt(
+                    rules::SUIT_ICONS,
+                    &style,
+                    &format!("the {suit} suit emblem (option {o} of a cohesive four-suit set)"),
+                );
                 let img = self
                     .image
                     .generate(ImageRequest {
-                        prompt: format!("{base_prompt} | suit: {suit}"),
+                        prompt,
                         seed: sub_seed(option_seed, suit.as_str()),
                         size: Size {
                             width: 64,
@@ -99,7 +95,11 @@ impl Sibyl {
                 id: option_id,
                 label: format!("Option {}", (b'A' + o as u8) as char),
                 suit_icons,
-                prompt_used: base_prompt,
+                prompt_used: build_image_prompt(
+                    rules::SUIT_ICONS,
+                    &style,
+                    &format!("suit emblems (option {o})"),
+                ),
             });
         }
 

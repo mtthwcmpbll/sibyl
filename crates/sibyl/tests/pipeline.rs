@@ -52,8 +52,25 @@ async fn full_pipeline_produces_an_active_self_contained_bundle() {
     assert_eq!(deck.provenance.seed, FIXED_SEED);
     assert!(deck.provenance.chosen_style_option_id.is_some());
     assert!(deck.provenance.court_card_shown.is_some());
-    assert!(deck.provenance.prompts.contains_key("styleGuide"));
-    assert!(deck.provenance.prompts.contains_key("sampleImagery"));
+    // Each artifact's LLM call was given ITS OWN rules file (distinctive phrases prove the
+    // right rules reached the right call), with the owner's style prepended-after.
+    let p = &deck.provenance.prompts;
+    assert!(out.style_options[0].prompt_used.contains("four suit icons")); // suit_icons.md
+    assert!(p["cardBorder"].contains("rectangular frame")); // card_border.md
+    assert!(p["cardBack"].contains("identical for every card")); // card_back.md
+    assert!(p["flourish"].contains("small ornament")); // flourish.md
+    assert!(p["sampleImagery"].contains("evocative illustration")); // background_image.md
+                                                                    // …and every one carries the owner's deck style, subordinate to the rules.
+    for key in ["cardBorder", "cardBack", "flourish", "sampleImagery"] {
+        assert!(
+            p[key].contains("midnight indigo and gold"),
+            "style missing from {key}"
+        );
+        assert!(
+            p[key].contains("AUTHORITATIVE"),
+            "rules framing missing from {key}"
+        );
+    }
 
     // The draft is gone and the active deck loads back identically (SC-003/004).
     assert!(!store.exists(&format!("decks/_drafts/{}/session.json", out.session_id)));

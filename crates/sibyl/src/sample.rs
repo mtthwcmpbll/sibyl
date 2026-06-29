@@ -4,8 +4,8 @@ use providers::{ImageRequest, Size};
 use render::{compose, Layer};
 
 use crate::error::{Result, SibylError};
-use crate::prompt::compose_image_prompt;
-use crate::Sibyl;
+use crate::prompt::build_image_prompt;
+use crate::{rules, Sibyl};
 
 /// Canvas width for the canonical sample render; height follows the layout aspect.
 const CARD_W: u32 = 256;
@@ -32,16 +32,13 @@ impl Sibyl {
         // Seeded court-card selection — reproducible, yet varied across sessions (Surprise).
         let court = select_court_card(sub_seed(session.seed, "court"));
 
-        let rules = session.iconography_rules.as_str().to_string();
         let style = session.deck_style_text.as_str().to_string();
-        let imagery_prompt = compose_image_prompt(
-            &*self.text,
-            &rules,
+        // Card imagery prepends the background-image rules (FR-019).
+        let imagery_prompt = build_image_prompt(
+            rules::BACKGROUND_IMAGE,
             &style,
-            &format!("court card imagery for the {court}"),
-            sub_seed(session.seed, "sample-imagery"),
-        )
-        .await?;
+            &format!("card imagery for the {court}: depict the {court}"),
+        );
 
         let imagery = self
             .image

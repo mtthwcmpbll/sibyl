@@ -18,9 +18,10 @@ Generate a round of suit-icon style options (FR-003/004/006).
 - **Progress**: emits progress events keyed by `sessionId` while generating.
 - **Errors**: `provider_failed` (retryable), `provider_unavailable` (retryable).
 - **Notes**: If `sessionId` omitted, a new session + seed is created. Re-calling with the same
-  `sessionId` regenerates options (preserves inputs; new seed-derived round). Image prompts are
-  built via `compose_image_prompt(rules, style)` with the iconography rules authoritative over
-  the deck-style text (FR-019); the composed prompt is recorded in provenance.
+  `sessionId` regenerates options (preserves inputs; new seed-derived round). Each artifact's
+  image prompt is built via `build_image_prompt(rules, style, subject)` which prepends that
+  artifact's app-defined rules file (here `rules::SUIT_ICONS`), authoritative over the
+  deck-style text (FR-019); the composed prompt is recorded in provenance.
 
 ## `select_icon_style`
 

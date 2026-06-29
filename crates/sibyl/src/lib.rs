@@ -17,16 +17,31 @@ use storage::Store;
 pub use approve::RestartInputs;
 pub use error::{Result, SibylError};
 pub use icons::{GenerateIconStyles, IconStylesResult};
-pub use prompt::compose_image_prompt;
+pub use prompt::build_image_prompt;
 
-/// Authoritative suit-iconography rules — defined by the application (not the owner) and
-/// baked in as a resource. The owner supplies only their deck style; these rules enforce
-/// consistent tarot-deck construction and take precedence over style (FR-001/FR-019).
-pub const ICONOGRAPHY_RULES: &str = include_str!("../resources/iconography_rules.md");
+/// Authoritative, app-defined prompt rules — one per generated artifact type. Each is a
+/// developer-editable resource that is **prepended** to the LLM prompt for that artifact and
+/// takes precedence over the owner's deck-style direction (FR-001/FR-019). The owner supplies
+/// only their deck style.
+pub mod rules {
+    /// Suit icons (Cups, Wands, Swords, Pentacles).
+    pub const SUIT_ICONS: &str = include_str!("../resources/prompts/suit_icons.md");
+    /// Card border / chrome frame.
+    pub const CARD_BORDER: &str = include_str!("../resources/prompts/card_border.md");
+    /// Card back (the uniform reverse shown face down).
+    pub const CARD_BACK: &str = include_str!("../resources/prompts/card_back.md");
+    /// Card imagery (the artwork/background on a card face).
+    pub const BACKGROUND_IMAGE: &str = include_str!("../resources/prompts/background_image.md");
+    /// Decorative flourishes.
+    pub const FLOURISH: &str = include_str!("../resources/prompts/flourish.md");
+}
 
 /// Orchestrates deck creation against injected providers and storage. Construct it in the
 /// host (e.g. the Tauri shell) from configuration; the core depends only on the traits.
 pub struct Sibyl {
+    /// Text provider — reserved for future text generation (e.g. weaving personal references
+    /// at draw time). The current image-only Preparation pipeline does not use it.
+    #[allow(dead_code)]
     text: Box<dyn TextProvider>,
     image: Box<dyn ImageProvider>,
     store: Box<dyn Store>,

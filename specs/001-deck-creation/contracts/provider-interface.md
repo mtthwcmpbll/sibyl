@@ -54,15 +54,16 @@ pub trait ImageProvider: Send + Sync {
   the adapter.
 - Surfaces failures as `ProviderError { retryable }` so the wizard can offer retry (FR-017).
 
-## Prompt composition (rules authoritative)
+## Prompt composition (per-artifact rules, authoritative)
 
-Image providers expose only a single `prompt` (no system channel). The `sibyl` layer
-therefore composes image prompts via the `TextProvider` from two inputs — the **iconography
-rules (authoritative / system-level)** and the **deck-style text (aesthetic direction)** —
-using a `compose_image_prompt(rules, style) -> String` helper. Rules take precedence on
-conflict. The composed string is passed as `ImageRequest.prompt` and recorded in provenance
-(FR-019; Principles V/VI). This keeps the rules/style separation provider-neutral instead of
-depending on any one model's prompt conventions.
+Image providers expose only a single `prompt` (no system channel). Each generated artifact
+type has its OWN app-defined rules file (suit icons, card border, card back, background
+imagery, flourish — under `crates/sibyl/resources/prompts/`). The `sibyl` layer builds the
+image prompt with `build_image_prompt(rules, style, subject)`, which **prepends** the
+artifact's rules, then the owner's deck style as subordinate direction, then the subject.
+Rules take precedence (FR-019); the composed string is passed as `ImageRequest.prompt` and
+recorded in provenance (Principles V/VI). There is exactly one LLM call per artifact (the
+image generation itself) — no separate prompt-composition call.
 
 ## Selection & configuration
 

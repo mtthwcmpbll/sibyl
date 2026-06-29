@@ -3,8 +3,8 @@ use domain::{CardStyleGuide, FlourishRef, FrontLayout, Rect, SessionStatus, Shad
 use providers::{ImageRequest, Size};
 
 use crate::error::{Result, SibylError};
-use crate::prompt::compose_image_prompt;
-use crate::Sibyl;
+use crate::prompt::build_image_prompt;
+use crate::{rules, Sibyl};
 
 impl Sibyl {
     /// Auto-derive a prompt from the chosen suit-icon style and generate the overall card
@@ -17,31 +17,28 @@ impl Sibyl {
             .ok_or(SibylError::NoStyleSelected)?
             .clone();
 
-        let rules = session.iconography_rules.as_str().to_string();
         let style = session.deck_style_text.as_str().to_string();
         let sg_seed = sub_seed(session.seed, "style-guide");
 
-        // Prompt derived from the chosen style automatically (FR-008).
-        let prompt = compose_image_prompt(
-            &*self.text,
-            &rules,
+        // Each style-guide asset prepends ITS OWN authoritative rules (FR-019) — derived from
+        // the chosen style automatically (FR-008), without restating it.
+        let border_prompt = build_image_prompt(
+            rules::CARD_BORDER,
             &style,
-            &format!(
-                "overall card style guide derived from chosen icon style '{}': \
-                 border and chrome, card back, decorative flourishes",
-                chosen.id
-            ),
-            sg_seed,
-        )
-        .await?;
+            "the card border and chrome frame",
+        );
+        let back_prompt = build_image_prompt(rules::CARD_BACK, &style, "the card back design");
+        let flourish_prompt = build_image_prompt(
+            rules::FLOURISH,
+            &style,
+            "a single decorative corner flourish",
+        );
 
-        // Generate the three style-guide image assets.
         let border_chrome_key = self
             .gen_asset(
                 session_id,
                 "style-guide/border-chrome.png",
-                &prompt,
-                "border and chrome",
+                &border_prompt,
                 sub_seed(sg_seed, "chrome"),
             )
             .await?;
@@ -49,8 +46,7 @@ impl Sibyl {
             .gen_asset(
                 session_id,
                 "style-guide/card-back.png",
-                &prompt,
-                "card back",
+                &back_prompt,
                 sub_seed(sg_seed, "back"),
             )
             .await?;
@@ -58,8 +54,7 @@ impl Sibyl {
             .gen_asset(
                 session_id,
                 "style-guide/flourish-1.png",
-                &prompt,
-                "corner flourish",
+                &flourish_prompt,
                 sub_seed(sg_seed, "flourish"),
             )
             .await?;
@@ -68,7 +63,7 @@ impl Sibyl {
             id: format!("sg-{}", session.id),
             version: 1,
             derived_from_style_option_id: chosen.id.clone(),
-            prompt_used: prompt.clone(),
+            prompt_used: border_prompt.clone(),
             border_chrome_key,
             card_back_key,
             card_front_layout: FrontLayout {
@@ -92,26 +87,33 @@ impl Sibyl {
         session
             .provenance
             .prompts
-            .insert("styleGuide".into(), prompt);
+            .insert("cardBorder".into(), border_prompt);
+        session
+            .provenance
+            .prompts
+            .insert("cardBack".into(), back_prompt);
+        session
+            .provenance
+            .prompts
+            .insert("flourish".into(), flourish_prompt);
         session.style_guide = Some(guide.clone());
         session.status = SessionStatus::StyleGuide;
         self.save_session(&session)?;
         Ok(guide)
     }
 
-    /// Generate one image asset for the given suffix key and store it; returns the storage key.
+    /// Generate one image asset from a fully-composed prompt, store it, return the storage key.
     async fn gen_asset(
         &self,
         session_id: &str,
         suffix: &str,
-        base_prompt: &str,
-        what: &str,
+        prompt: &str,
         seed: u64,
     ) -> Result<String> {
         let img = self
             .image
             .generate(ImageRequest {
-                prompt: format!("{base_prompt} | element: {what}"),
+                prompt: prompt.to_string(),
                 seed,
                 size: Size {
                     width: 64,

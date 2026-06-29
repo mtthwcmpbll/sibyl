@@ -36,7 +36,7 @@ fn fnv1a(seed: u64, parts: &[&str]) -> u64 {
 impl TextProvider for FakeProvider {
     async fn complete(&self, req: TextRequest) -> Result<TextResponse, ProviderError> {
         // Echo the composition deterministically. The authority of `system` over `prompt`
-        // is decided by the caller (compose_image_prompt); here we simply preserve it.
+        // is decided by the caller (build_image_prompt); here we simply preserve it.
         let text = format!("{} || {}", req.system.trim(), req.prompt.trim());
         Ok(TextResponse {
             text: text.trim().to_string(),

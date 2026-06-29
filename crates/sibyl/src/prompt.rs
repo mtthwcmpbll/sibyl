@@ -1,46 +1,53 @@
-use providers::{GenParams, TextProvider, TextRequest};
+//! Build the prompt sent to the image provider for a generated artifact: the artifact's
+//! authoritative, app-defined rules first, then the owner's deck style as subordinate
+//! direction, then the specific subject. The rules are PREPENDED and take precedence
+//! (FR-019); the composed prompt is what gets recorded in provenance.
 
-use crate::error::Result;
-
-/// Compose the image-generation prompt from the **authoritative iconography rules** and the
-/// **subordinate deck-style direction** (FR-019). Image providers expose only a single
-/// prompt, so the rules/style precedence is enforced here, at composition time, and the
-/// composed string is what gets recorded in provenance.
-pub async fn compose_image_prompt(
-    text: &dyn TextProvider,
-    rules: &str,
-    style: &str,
-    context: &str,
-    seed: u64,
-) -> Result<String> {
-    let system = if rules.trim().is_empty() {
-        "AUTHORITATIVE ICONOGRAPHY RULES (override all style direction): \
-         follow tasteful, coherent tarot iconography conventions."
-            .to_string()
+/// Compose an image-generation prompt by prepending the artifact `rules` to the owner's
+/// `style` and the specific `subject`. Pure (no LLM call) — there is exactly one LLM call per
+/// artifact: the image generation itself.
+pub fn build_image_prompt(rules: &str, style: &str, subject: &str) -> String {
+    let rules = rules.trim();
+    let style = style.trim();
+    let style_line = if style.is_empty() {
+        "(no explicit style given; choose something evocative within the rules)"
     } else {
-        format!(
-            "AUTHORITATIVE ICONOGRAPHY RULES (override all style direction): {}",
-            rules.trim()
-        )
+        style
     };
 
-    let style_part = if style.trim().is_empty() {
-        "(no explicit style given; choose something evocative within the rules)".to_string()
-    } else {
-        style.trim().to_string()
-    };
+    format!(
+        "AUTHORITATIVE RULES (override all style direction):\n{rules}\n\n\
+         Deck style (subordinate to the rules): {style_line}\n\n\
+         Subject: {subject}"
+    )
+}
 
-    let prompt =
-        format!("Style direction (subordinate to the rules): {style_part}. Context: {context}.");
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    let resp = text
-        .complete(TextRequest {
-            system,
-            prompt,
-            seed,
-            params: GenParams::default(),
-        })
-        .await?;
+    #[test]
+    fn rules_are_prepended_and_authoritative_over_style() {
+        let p = build_image_prompt(
+            "only line art, no color, sacred geometry",
+            "warm watercolor with lots of color",
+            "the cups suit emblem",
+        );
+        assert!(p.contains("AUTHORITATIVE"));
+        let rules_pos = p.find("sacred geometry").expect("rules present");
+        let style_pos = p.find("warm watercolor").expect("style present");
+        assert!(
+            rules_pos < style_pos,
+            "rules must precede (outrank) style:\n{p}"
+        );
+        assert!(p.contains("the cups suit emblem"));
+    }
 
-    Ok(resp.text)
+    #[test]
+    fn empty_style_still_keeps_rules() {
+        let p = build_image_prompt("four suits only", "", "a card back");
+        assert!(p.contains("AUTHORITATIVE"));
+        assert!(p.contains("four suits only"));
+        assert!(p.contains("a card back"));
+    }
 }

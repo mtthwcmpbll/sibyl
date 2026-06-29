@@ -56,7 +56,9 @@ async fn approve_promotes_bundle_sets_active_and_records_provenance() {
     assert_eq!(active.provenance.seed, FIXED_SEED);
     assert!(active.provenance.chosen_style_option_id.is_some());
     assert!(active.provenance.court_card_shown.is_some());
-    assert!(active.provenance.prompts.contains_key("styleGuide"));
+    assert!(active.provenance.prompts.contains_key("cardBorder"));
+    assert!(active.provenance.prompts.contains_key("cardBack"));
+    assert!(active.provenance.prompts.contains_key("flourish"));
     assert!(active.provenance.prompts.contains_key("sampleImagery"));
 }
 

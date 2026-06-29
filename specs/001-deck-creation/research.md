@@ -41,14 +41,15 @@ recorded here with rationale and alternatives.
 - **Alternatives**: Hard-coding a single vendor SDK — rejected (violates Principle I). Mocking
   at the HTTP layer only — rejected (a first-class fake is cleaner and reusable in dev).
 
-## 3a. Prompt composition — iconography rules are authoritative
+## 3a. Prompt composition — per-artifact rules are authoritative
 
-- **Decision**: Image-generation prompts (suit icons, style-guide art, sample imagery) are
-  composed by the `TextProvider` from two parts — the **iconography rules as a system-level,
-  authoritative constraint** and the **deck-style text as aesthetic direction**. A
-  `compose_image_prompt(rules, style)` helper in `sibyl` yields the final
-  `ImageRequest.prompt`; the rules win on any conflict. The composed prompt is recorded in
-  provenance.
+- **Decision**: Each generated artifact type has its own app-defined rules file
+  (`crates/sibyl/resources/prompts/{suit_icons,card_border,card_back,background_image,flourish}.md`).
+  A pure `build_image_prompt(rules, style, subject)` helper **prepends** the artifact's rules,
+  then the owner's deck style (subordinate), then the subject, yielding the final
+  `ImageRequest.prompt`; rules win on conflict. There is exactly one LLM call per artifact (the
+  image generation); the composed prompt is recorded in provenance. (Earlier this routed
+  through a `TextProvider` composition call, since removed as redundant.)
 - **Rationale**: Honors the owner's intent that the rules are a "system prompt component"
   distinct from style. Image APIs typically expose only a single prompt (no system channel),
   so the separation is enforced at composition time rather than relying on the image model
