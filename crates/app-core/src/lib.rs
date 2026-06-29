@@ -6,7 +6,7 @@ use std::path::PathBuf;
 use base64::Engine;
 use deckforge::{DeckForge, GenerateIconStyles, IconStylesResult, RestartInputs};
 use domain::{CardStyleGuide, Deck, SampleCard};
-use providers::{FakeProvider, ImageProvider, TextProvider};
+use providers::{ClaudeCliProvider, FakeProvider, ImageProvider, TextProvider};
 use serde::Serialize;
 use storage::FsStore;
 
@@ -139,20 +139,18 @@ pub fn build_deckforge() -> DeckForge {
     )
 }
 
-// The single `_` arm is the extension point: add `Some("acme") => …` to plug a real adapter
-// behind the same trait (Principle I). Kept as a `match` deliberately.
-#[allow(clippy::match_single_binding)]
+/// Select a provider by `DECKFORGE_PROVIDER`. `claude` drives the local Claude Code CLI
+/// (vector/SVG art); anything else uses the offline deterministic fake.
 fn make_text_provider() -> Box<dyn TextProvider> {
     match std::env::var("DECKFORGE_PROVIDER").ok().as_deref() {
-        // Future: Some("acme") => Box::new(AcmeHttpProvider::from_env()),
+        Some("claude") => Box::new(ClaudeCliProvider::from_env()),
         _ => Box::new(FakeProvider::new()),
     }
 }
 
-#[allow(clippy::match_single_binding)]
 fn make_image_provider() -> Box<dyn ImageProvider> {
     match std::env::var("DECKFORGE_PROVIDER").ok().as_deref() {
-        // Future: Some("acme") => Box::new(AcmeHttpImageProvider::from_env()),
+        Some("claude") => Box::new(ClaudeCliProvider::from_env()),
         _ => Box::new(FakeProvider::new()),
     }
 }

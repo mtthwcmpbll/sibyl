@@ -17,8 +17,8 @@ fn no_vendor_tokens_leak_outside_adapter_modules() {
         "ollama",
         "mistralai",
     ];
-    // Modules permitted to reference a vendor SDK (the adapter boundary).
-    let allowed = ["http.rs"];
+    // Modules permitted to reference a vendor SDK or tool (the adapter boundary).
+    let allowed = ["http.rs", "claude.rs"];
 
     let src = concat!(env!("CARGO_MANIFEST_DIR"), "/src");
     for entry in fs::read_dir(src).unwrap() {

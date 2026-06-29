@@ -68,13 +68,25 @@ cargo install tauri-cli --version '^2'
 cd src-tauri && cargo tauri dev
 ```
 
-By default it uses the offline `FakeProvider`. Real generation is opt-in via environment
-(credentials come from the environment only and are never logged):
+By default it uses the offline `FakeProvider`. Real generation is opt-in via environment.
+
+### Claude provider (your Claude Code subscription)
+
+Drives the locally-installed, logged-in `claude` CLI — no API key needed:
 
 ```bash
-export DECKFORGE_PROVIDER=<provider-id>
-export DECKFORGE_API_KEY=...
+export DECKFORGE_PROVIDER=claude
+# optional overrides:
+export DECKFORGE_CLAUDE_BIN=claude          # path to the claude binary
+export DECKFORGE_CLAUDE_MODEL=...           # specific model
+cargo tauri dev
 ```
+
+Note: Claude does not produce raster images, so this provider asks Claude for **SVG vector
+art** and rasterizes it to PNG — a natural fit for clean tarot iconography. Each icon/asset is
+one `claude` invocation, so a full deck creation makes ~16 calls and takes a bit; the wizard
+shows progress throughout. Swapping in a raster image model later is just another adapter
+behind the same `ImageProvider` trait.
 
 ## Performance notes
 
