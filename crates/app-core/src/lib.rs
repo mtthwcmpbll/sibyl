@@ -6,7 +6,7 @@ use std::path::PathBuf;
 use base64::Engine;
 use deckforge::{DeckForge, GenerateIconStyles, IconStylesResult, RestartInputs};
 use domain::{CardStyleGuide, Deck, SampleCard};
-use providers::{ClaudeCliProvider, FakeProvider, ImageProvider, TextProvider};
+use providers::{AgyCliProvider, ClaudeCliProvider, FakeProvider, ImageProvider, TextProvider};
 use serde::Serialize;
 use storage::FsStore;
 
@@ -139,11 +139,13 @@ pub fn build_deckforge() -> DeckForge {
     )
 }
 
-/// Select a provider by `DECKFORGE_PROVIDER`. `claude` drives the local Claude Code CLI
-/// (vector/SVG art); anything else uses the offline deterministic fake.
+/// Select a provider by `DECKFORGE_PROVIDER`: `claude` drives the Claude Code CLI and
+/// `agy`/`antigravity` drives the Google Antigravity CLI (both vector/SVG art); anything else
+/// uses the offline deterministic fake.
 fn make_text_provider() -> Box<dyn TextProvider> {
     match std::env::var("DECKFORGE_PROVIDER").ok().as_deref() {
         Some("claude") => Box::new(ClaudeCliProvider::from_env()),
+        Some("agy") | Some("antigravity") => Box::new(AgyCliProvider::from_env()),
         _ => Box::new(FakeProvider::new()),
     }
 }
@@ -151,6 +153,7 @@ fn make_text_provider() -> Box<dyn TextProvider> {
 fn make_image_provider() -> Box<dyn ImageProvider> {
     match std::env::var("DECKFORGE_PROVIDER").ok().as_deref() {
         Some("claude") => Box::new(ClaudeCliProvider::from_env()),
+        Some("agy") | Some("antigravity") => Box::new(AgyCliProvider::from_env()),
         _ => Box::new(FakeProvider::new()),
     }
 }

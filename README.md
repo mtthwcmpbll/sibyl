@@ -88,6 +88,20 @@ one `claude` invocation, so a full deck creation makes ~16 calls and takes a bit
 shows progress throughout. Swapping in a raster image model later is just another adapter
 behind the same `ImageProvider` trait.
 
+### Antigravity provider (Google Antigravity `agy` CLI)
+
+Drives the locally-installed, logged-in `agy` CLI — same vector-art (SVG→PNG) approach:
+
+```bash
+export DECKFORGE_PROVIDER=agy               # or "antigravity"
+# optional overrides:
+export DECKFORGE_AGY_BIN=agy                # path to the agy binary
+export DECKFORGE_AGY_TIMEOUT=5m             # --print-timeout (Go duration)
+cargo tauri dev
+```
+
+Both CLI providers share the SVG extraction + rasterization logic (`crates/providers/src/svg.rs`).
+
 ## Performance notes
 
 Generation is the only slow step and is always off the UI thread; the wizard surfaces a busy
