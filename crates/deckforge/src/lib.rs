@@ -55,4 +55,9 @@ impl DeckForge {
         let bytes = self.store.get(&key)?;
         serde_json::from_slice(&bytes).map_err(|e| DeckForgeError::Storage(e.to_string()))
     }
+
+    /// Resolve a storage key to raw bytes (used by the IPC layer's `get_asset`).
+    pub fn get_asset(&self, key: &str) -> Result<Vec<u8>> {
+        Ok(self.store.get(key)?)
+    }
 }

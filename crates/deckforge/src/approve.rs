@@ -4,7 +4,7 @@ use crate::error::{DeckForgeError, Result};
 use crate::DeckForge;
 
 /// Inputs returned to the wizard after a rejection so they can be edited and retried (FR-013).
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct RestartInputs {
     pub rules: String,
     pub style: String,

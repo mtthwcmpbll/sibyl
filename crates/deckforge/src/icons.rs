@@ -19,7 +19,8 @@ pub struct GenerateIconStyles {
     pub count: usize,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct IconStylesResult {
     pub session_id: String,
     pub style_options: Vec<StyleOption>,
